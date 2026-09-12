@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubair Digital Hub - Admin Customer Reviews Manager</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-[#080b11] text-gray-200 min-h-screen selection:bg-amber-500 selection:text-slate-950">
+
+    <div class="flex h-screen w-screen overflow-hidden text-gray-300 font-sans">
+        
+        <!-- LEFT SIDEBAR -->
+        <aside class="w-64 bg-[#080b11] border-r border-white/5 flex flex-col justify-between p-4 flex-shrink-0">
+            <div>
+                <!-- Brand Header -->
+                <div class="flex items-center gap-3 px-3 py-3 mb-6 border-b border-white/5">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold border border-amber-500/30">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <div>
+                        <span class="text-sm font-bold text-white block leading-tight">Zubair Digital Hub</span>
+                        <span class="text-[10px] text-gray-500 font-mono uppercase">Master Admin</span>
+                    </div>
+                </div>
+
+                <!-- Admin Navigation Pages -->
+                <nav class="space-y-1 text-xs">
+                    <a href="index.html" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        <i class="fa-solid fa-globe text-sm text-cyan-400"></i> Open Main Website
+                    </a>
+                    <a href="admin.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        <i class="fa-solid fa-table-cells-large text-sm"></i> Dashboard Overview
+                    </a>
+                    <a href="admin-listings.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        <i class="fa-solid fa-list-check text-sm"></i> Listings Inventory
+                    </a>
+                    <a href="admin-withdrawals.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        <i class="fa-solid fa-wallet text-sm text-emerald-400"></i> Payment & Withdrawals
+                    </a>
+                    <a href="admin-support.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        <i class="fa-solid fa-headset text-sm"></i> Support Desk Contacts
+                    </a>
+                    <a href="admin-reviews.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-300 font-bold transition">
+                        <i class="fa-solid fa-star text-sm text-amber-400"></i> Customer Reviews
+                    </a>
+                    <a href="admin-security.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                        <i class="fa-solid fa-key text-sm text-indigo-400"></i> Admin Security
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Profile Footer -->
+            <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-full btn-brand flex items-center justify-center font-bold text-white text-xs">
+                        Z
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-white">zubair001</p>
+                        <span class="text-[10px] text-emerald-400 font-semibold">● Master Admin</span>
+                    </div>
+                </div>
+                <button onclick="logoutAdmin()" title="Logout" class="text-gray-500 hover:text-red-400 text-sm">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 overflow-y-auto bg-[#0c1017] p-6 lg:p-8">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                <div>
+                    <h2 class="text-xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-star text-amber-400"></i> Customer Reviews Moderation Manager
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">Review, approve, or delete customer reviews submitted on Zubair Digital Hub.</p>
+                </div>
+                <a href="admin.html" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-xl text-xs font-bold transition">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <div class="bg-[#101622] p-6 rounded-3xl border border-amber-500/30 shadow-2xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-xs text-gray-400 uppercase border-b border-white/10 pb-2 font-bold">
+                                <th class="pb-3 px-3">Customer Name</th>
+                                <th class="pb-3 px-3">Rating</th>
+                                <th class="pb-3 px-3">Service / Deal</th>
+                                <th class="pb-3 px-3">Comment Text</th>
+                                <th class="pb-3 px-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviews-table-body">
+                            <!-- Dynamic Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/data.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadReviews();
+            const isAuth = localStorage.getItem('zdh_admin_session') === 'true';
+            if (!isAuth) {
+                alert('Please login as Master Admin first.');
+                window.location.href = 'admin.html';
+                return;
+            }
+
+            renderReviewsTable();
+        });
+
+        function renderReviewsTable() {
+            const body = document.getElementById('reviews-table-body');
+            if (!body) return;
+
+            if (allReviews.length === 0) {
+                body.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-xs text-gray-500 font-mono">No customer reviews in database.</td></tr>`;
+                return;
+            }
+
+            body.innerHTML = allReviews.map(rev => `
+                <tr class="border-b border-white/5 text-xs text-gray-300 hover:bg-white/5 transition">
+                    <td class="py-3.5 px-3 font-bold text-white">${rev.name}</td>
+                    <td class="py-3.5 px-3 text-amber-400 font-bold">${rev.rating} ★</td>
+                    <td class="py-3.5 px-3 text-indigo-300 font-semibold">${rev.serviceOrAccount}</td>
+                    <td class="py-3.5 px-3 truncate max-w-xs italic text-gray-300">"${rev.comment}"</td>
+                    <td class="py-3.5 px-3 text-right">
+                        <button onclick="deleteReviewItem('${rev.id}')" class="px-3 py-1.5 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 rounded-xl font-bold transition">
+                            <i class="fa-solid fa-trash"></i> Delete
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteReviewItem(id) {
+            if (!confirm('Are you sure you want to delete this customer review?')) return;
+            allReviews = allReviews.filter(r => r.id !== id);
+            localStorage.setItem('zdh_reviews', JSON.stringify(allReviews));
+            renderReviewsTable();
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('zdh_admin_session');
+            window.location.href = 'admin.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+=============================================================
+ZUBAIR DIGITAL HUB - MASTER ADMIN ACCESS & INSTRUCTIONS
+=============================================================
+
+1. WEBSITE LINK:
+   Double-click "Click_To_Open_Website.bat" inside this folder to open your website instantly.
+
+2. MASTER ADMIN LOGIN DETAILS:
+   - Login Page: Click "Master Login" on top right of website.
+   - Master Username: zubair
+   - Master Password: zubair123
+
+3. WHAT YOU CAN DO IN ADMIN DASHBOARD:
+   - Add new social media listings (YouTube, Facebook, TikTok, Instagram, Twitter).
+   - Delete any listing or fake account with 1-click.
+   - Manage customer reviews.
+   - Change your master admin password anytime.
+   - Direct WhatsApp integration for buyers & escrow deals (+92 300 1234567).
+
+=============================================================
+Folder Path: C:\Users\ART\.gemini\antigravity\scratch\zubair-digital-hub
+=============================================================

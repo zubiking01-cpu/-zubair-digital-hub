@@ -1,0 +1,8 @@
+# Netlify Clean URL Routing & Redirects for Zubair Digital Hub
+/admin        /admin.html       200
+/checkout     /checkout.html    200
+/listings     /admin-listings.html 200
+/withdrawals  /admin-withdrawals.html 200
+/support      /admin-support.html 200
+/reviews      /admin-reviews.html 200
+/security     /admin-security.html 200

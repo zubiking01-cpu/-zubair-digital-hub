@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubair Digital Hub - Social Media Buy & Sell Marketplace & Escrow System</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-platform="all" class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white text-xs py-2 px-4 border-b border-white/10 text-center font-medium flex items-center justify-center gap-2">
+        <span class="bg-emerald-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[10px] uppercase tracking-wider">Live Rates</span>
+        <span>Payments Accepted in <strong>USDT ($)</strong> & <strong>PKR (Rs)</strong> via Local & International Transfers!</span>
+        <button onclick="openSupportModal()" class="underline hover:text-cyan-400 font-bold ml-1 flex items-center gap-1">
+            <i class="fa-solid fa-headset"></i> 24/7 Client Support &rarr;
+        </button>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo & Currency Switcher -->
+            <div class="flex items-center gap-4">
+                <a href="#" onclick="switchPlatform('all')" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-2xl btn-brand flex items-center justify-center text-xl shadow-lg group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                            Zubair <span class="gradient-text">Digital Hub</span>
+                        </span>
+                        <span class="text-[10px] text-gray-400 uppercase tracking-widest block font-bold -mt-0.5">Social Marketplace & Escrow</span>
+                    </div>
+                </a>
+
+                <!-- Currency Switcher Toggle (PKR vs USDT) -->
+                <div class="hidden sm:flex items-center bg-slate-900/90 p-1 rounded-xl border border-white/10 text-xs">
+                    <button id="curr-pkr-btn" onclick="switchCurrency('PKR')" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow">PKR (Rs)</button>
+                    <button id="curr-usdt-btn" onclick="switchCurrency('USDT')" class="px-2.5 py-1 text-xs font-bold rounded-lg text-gray-400 hover:text-white flex items-center gap-1">
+                        <i class="fa-solid fa-coins text-emerald-400"></i> USDT ($)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Desktop Links -->
+            <nav class="hidden lg:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-white/10">
+                <button data-platform="all" class="nav-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-white transition bg-white/10">All Platforms</button>
+                <button data-platform="youtube" class="nav-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-youtube text-red-500"></i> YouTube
+                </button>
+                <button data-platform="facebook" class="nav-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-facebook text-blue-500"></i> Facebook
+                </button>
+                <button data-platform="tiktok" class="nav-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-tiktok text-cyan-400"></i> TikTok
+                </button>
+                <button data-platform="instagram" class="nav-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-instagram text-pink-500"></i> Instagram
+                </button>
+                <button data-platform="twitter" class="nav-tab px-3.5 py-1.5 text-xs font-bold rounded-xl text-gray-400 hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-x-twitter text-blue-400"></i> Twitter / X
+                </button>
+            </nav>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="openServicesModal()" class="px-3 py-2 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-purple-500/10">
+                    <i class="fa-solid fa-rocket text-purple-400"></i> Growth Services
+                </button>
+                <button onclick="openSupportModal()" class="px-3 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/30 text-cyan-300 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                    <i class="fa-solid fa-headset"></i> Support
+                </button>
+                <button onclick="openPaymentInfoModal()" class="hidden sm:flex px-3 py-2 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 text-emerald-400 rounded-xl text-xs font-bold transition items-center gap-1">
+                    <i class="fa-solid fa-wallet"></i> Wallets
+                </button>
+                <button onclick="openSellModal()" class="px-3 sm:px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-emerald-600/20 flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus-circle"></i> Sell Account
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Platform & Currency Navigation Scrollable -->
+        <div class="lg:hidden flex overflow-x-auto items-center justify-between gap-2 px-4 py-2 bg-slate-900/90 border-t border-white/5 no-scrollbar">
+            <div class="flex items-center gap-1">
+                <button data-platform="all" class="nav-tab px-2.5 py-1 text-xs font-bold rounded-lg text-white bg-white/10 whitespace-nowrap">All</button>
+                <button data-platform="youtube" class="nav-tab px-2.5 py-1 text-xs font-bold rounded-lg text-gray-400 whitespace-nowrap"><i class="fa-brands fa-youtube text-red-500"></i> YouTube</button>
+                <button data-platform="facebook" class="nav-tab px-2.5 py-1 text-xs font-bold rounded-lg text-gray-400 whitespace-nowrap"><i class="fa-brands fa-facebook text-blue-500"></i> Facebook</button>
+                <button data-platform="tiktok" class="nav-tab px-2.5 py-1 text-xs font-bold rounded-lg text-gray-400 whitespace-nowrap"><i class="fa-brands fa-tiktok text-cyan-400"></i> TikTok</button>
+            </div>
+            <div class="flex items-center bg-slate-950 p-0.5 rounded-lg border border-white/10 text-[10px]">
+                <button id="mob-curr-pkr-btn" onclick="switchCurrency('PKR')" class="px-2 py-0.5 font-bold rounded text-white bg-indigo-600">PKR</button>
+                <button id="mob-curr-usdt-btn" onclick="switchCurrency('USDT')" class="px-2 py-0.5 font-bold rounded text-gray-400">USDT ($)</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- BIG OWNER BANNER HERO SECTION WITH DYNAMIC PLATFORM LOGO BADGE ABOVE TITLE -->
+    <section class="hero-banner-section relative py-16 lg:py-24 overflow-hidden border-b border-white/10 transition-all duration-500">
+        <!-- Giant Platform Background Watermark Icon -->
+        <div id="platform-watermark-icon" class="platform-watermark">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <!-- Glow Orbs in Background -->
+        <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[30rem] h-[30rem] bg-indigo-600/20 blur-3xl rounded-full animate-pulse-glow pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            
+            <!-- Dynamic Platform Logo Badge ABOVE Title -->
+            <div id="hero-platform-logo-badge">
+                <div class="w-16 h-16 rounded-2xl btn-brand flex items-center justify-center text-3xl shadow-2xl mb-4 mx-auto animate-bounce">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+            </div>
+
+            <!-- Owner Badge -->
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-slate-900/90 border border-amber-500/30 shadow-xl backdrop-blur-md mb-6">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
+                <span class="text-xs font-black text-amber-300 uppercase tracking-widest flex items-center gap-1.5">
+                    <i class="fa-solid fa-crown"></i> Owner: ZUBAIR | Verified Social Media Escrow Portal
+                </span>
+            </div>
+
+            <!-- Massive Dynamic Banner Title -->
+            <h1 id="hero-platform-title" class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight max-w-5xl mx-auto leading-none uppercase">
+                ZUBAIR <span class="gradient-text">DIGITAL HUB</span>
+            </h1>
+            
+            <p id="hero-platform-desc" class="mt-4 text-base sm:text-xl text-gray-300 font-semibold max-w-3xl mx-auto">
+                Global #1 Social Media Account Buying & Selling Escrow Portal. Auto-converted prices in USDT ($) & Local Currencies.
+            </p>
+
+            <!-- PROMINENT PLATFORM SELECTION CARDS ON HERO BANNER -->
+            <div class="mt-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 max-w-5xl mx-auto">
+                <button onclick="switchPlatform('all')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 border border-white/10 hover:border-indigo-500 group transition">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <span class="text-xs font-extrabold text-white">All Accounts</span>
+                </button>
+
+                <button onclick="switchPlatform('youtube')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 border border-red-500/30 hover:border-red-500 bg-red-950/20 group transition">
+                    <div class="w-12 h-12 rounded-xl bg-red-600/20 text-red-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <span class="text-xs font-extrabold text-white">YouTube</span>
+                </button>
+
+                <button onclick="switchPlatform('facebook')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 border border-blue-500/30 hover:border-blue-500 bg-blue-950/20 group transition">
+                    <div class="w-12 h-12 rounded-xl bg-blue-600/20 text-blue-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-facebook"></i>
+                    </div>
+                    <span class="text-xs font-extrabold text-white">Facebook</span>
+                </button>
+
+                <button onclick="switchPlatform('tiktok')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 border border-cyan-500/30 hover:border-cyan-400 bg-cyan-950/20 group transition">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </div>
+                    <span class="text-xs font-extrabold text-white">TikTok</span>
+                </button>
+
+                <button onclick="switchPlatform('instagram')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 border border-pink-500/30 hover:border-pink-500 bg-pink-950/20 group transition">
+                    <div class="w-12 h-12 rounded-xl bg-pink-600/20 text-pink-500 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-instagram"></i>
+                    </div>
+                    <span class="text-xs font-extrabold text-white">Instagram</span>
+                </button>
+
+                <button onclick="switchPlatform('twitter')" class="glass-card p-4 rounded-2xl flex flex-col items-center justify-center gap-2 border border-sky-500/30 hover:border-sky-400 bg-sky-950/20 group transition">
+                    <div class="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </div>
+                    <span class="text-xs font-extrabold text-white">Twitter / X</span>
+                </button>
+            </div>
+
+            <!-- SUPER PROMINENT LIVE SEARCH BAR & QUICK FILTERS -->
+            <div class="mt-10 max-w-4xl mx-auto bg-slate-900/95 backdrop-blur-2xl p-4 sm:p-5 rounded-3xl border-2 border-indigo-500/40 shadow-2xl shadow-indigo-500/20 flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-indigo-400 text-lg"></i>
+                    <input type="text" id="search-input" placeholder="🔍 Search any channel, page, handle, or niche (e.g. Gaming, 100k, Monetized)..." class="w-full bg-slate-950 border border-indigo-500/30 rounded-2xl pl-12 pr-4 py-3.5 text-base text-white placeholder-gray-400 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/30 font-semibold transition">
+                </div>
+                <div class="flex gap-2">
+                    <select id="monetization-filter" class="bg-slate-950 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-gray-200 font-bold focus:outline-none focus:border-indigo-400">
+                        <option value="all">⚡ All Monetization</option>
+                        <option value="monetized">✅ Monetized Only</option>
+                        <option value="non-monetized">⭕ Organic / Non-Monetized</option>
+                    </select>
+                    <select id="price-filter" class="bg-slate-950 border border-white/10 rounded-2xl px-4 py-3.5 text-xs text-gray-200 font-bold focus:outline-none focus:border-indigo-400">
+                        <option value="all">💰 Any Price Range</option>
+                        <option value="under-50k">Under 50K</option>
+                        <option value="50k-150k">50K - 150K</option>
+                        <option value="above-150k">150K+</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Trust Stats Row -->
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-4 rounded-2xl">
+                    <h3 class="text-2xl font-black text-white">500+</h3>
+                    <p class="text-xs text-gray-400 font-semibold mt-0.5">Successful Deals</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-4 rounded-2xl">
+                    <h3 class="text-2xl font-black text-emerald-400">100%</h3>
+                    <p class="text-xs text-gray-400 font-semibold mt-0.5">Escrow Protection</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-4 rounded-2xl">
+                    <h3 class="text-2xl font-black text-cyan-400">USDT & PKR</h3>
+                    <p class="text-xs text-gray-400 font-semibold mt-0.5">Auto Exchange Rates</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-4 rounded-2xl">
+                    <h3 class="text-2xl font-black text-amber-400">4.9 ★</h3>
+                    <p class="text-xs text-gray-400 font-semibold mt-0.5">Customer Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marketplace Listings Section -->
+    <section id="marketplace-section" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+                <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Available Inventory</span>
+                <h2 class="text-3xl font-extrabold text-white mt-1">Verified Account Listings</h2>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="resetFilters()" class="text-xs text-gray-400 hover:text-white underline">Clear Search & Filters</button>
+            </div>
+        </div>
+
+        <!-- Listings Grid Target -->
+        <div id="listings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Dynamic JavaScript Rendering -->
+        </div>
+    </section>
+
+    <!-- USER REVIEWS SECTION (Clean Container for Real Buyer Reviews) -->
+    <section id="reviews-section" class="py-16 bg-slate-950/80 border-t border-white/10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+                <div>
+                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 uppercase tracking-wider">
+                        <i class="fa-solid fa-star"></i> Real Buyer Experience
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-white mt-2">Customer Reviews & Feedback</h2>
+                    <p class="text-xs text-gray-400 mt-1">Verified customer reviews submitted by buyers after completing deals.</p>
+                </div>
+                <div>
+                    <button onclick="openReviewModal()" class="px-5 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition shadow-lg shadow-amber-500/20 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square"></i> Write a Customer Review
+                    </button>
+                </div>
+            </div>
+
+            <!-- Reviews Grid Target -->
+            <div id="reviews-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamic JavaScript Rendering -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PLATFORM SMM GROWTH BOOSTERS SECTION ON HOMEPAGE -->
+    <section id="services-section" class="py-16 bg-slate-900/60 border-y border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="px-3 py-1 text-xs font-bold rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 uppercase tracking-wider">
+                        <i class="fa-solid fa-rocket"></i> Algorithm Growth Boosters
+                    </span>
+                    <h2 class="text-3xl font-extrabold text-white mt-2">Social Media Growth Services & Packages</h2>
+                    <p class="text-xs text-gray-400 mt-1">Get Monetization Watch Hours, Subscribers, Followers, Page Approval & Instant View Pushes.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="openServicesModal('all')" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-expand"></i> Open Services Modal
+                    </button>
+                </div>
+            </div>
+
+            <!-- Homepage Services Grid Target -->
+            <div id="homepage-services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic JavaScript Rendering -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Escrow System & Fee Calculator Section -->
+    <section id="escrow-section" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Left Escrow Workflow Info -->
+            <div class="lg:col-span-7">
+                <span class="px-3 py-1 text-xs font-bold rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 uppercase tracking-wider">
+                    <i class="fa-solid fa-shield-halved"></i> How Zubair Escrow Works
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-4 leading-tight">
+                    Zero Risk Account Buying & Selling
+                </h2>
+                <p class="text-sm text-gray-400 mt-3 leading-relaxed">
+                    Our admin acts as an impartial third party. Buyer pays Escrow funds first. We inspect and secure all credentials (email, recovery, 2FA) from seller, verify channel history, and then transfer to buyer. Once verified, funds are released to seller.
+                </p>
+
+                <!-- 4 Steps Workflow Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-white/10">
+                        <span class="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-black text-sm mb-3">1</span>
+                        <h4 class="text-base font-bold text-white">Buyer Deposits Payment</h4>
+                        <p class="text-xs text-gray-400 mt-1">Buyer sends deal payment safely in USDT ($) or PKR (Rs) to official Escrow account.</p>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-white/10">
+                        <span class="w-8 h-8 rounded-xl bg-cyan-600 text-white flex items-center justify-center font-black text-sm mb-3">2</span>
+                        <h4 class="text-base font-bold text-white">Seller Hands Over Account</h4>
+                        <p class="text-xs text-gray-400 mt-1">Seller passes original email & full channel access to Zubair Digital Hub Admin.</p>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-white/10">
+                        <span class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center font-black text-sm mb-3">3</span>
+                        <h4 class="text-base font-bold text-white">Security & Audit Check</h4>
+                        <p class="text-xs text-gray-400 mt-1">Admin verifies monetization, copyright status, recovery details & changes credentials.</p>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-2xl border border-white/10">
+                        <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-sm mb-3">4</span>
+                        <h4 class="text-base font-bold text-white">Handover & Seller Payout</h4>
+                        <p class="text-xs text-gray-400 mt-1">Account given to buyer, and seller receives funds instantly (JazzCash / EasyPaisa / Bank / USDT).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Escrow Fee Calculator Box -->
+            <div class="lg:col-span-5 bg-slate-900/90 backdrop-blur-2xl p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl relative">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-xl font-extrabold text-white">Escrow Fee Calculator</h3>
+                        <p class="text-xs text-gray-400 mt-0.5">Calculate transparent transaction protection fee</p>
+                    </div>
+                    <i class="fa-solid fa-calculator text-2xl text-indigo-400"></i>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Deal Amount (Base Price)</label>
+                        <input type="number" id="escrow-calc-amount" value="50000" step="1000" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-3 text-lg font-bold text-white focus:outline-none focus:border-indigo-500">
+                    </div>
+
+                    <div class="bg-slate-950/80 p-4 rounded-2xl border border-white/5 space-y-2">
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Escrow Protection Fee:</span>
+                            <span id="escrow-fee-display" class="text-indigo-400 font-bold">PKR 2,500</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Security Guarantee:</span>
+                            <span class="text-emerald-400 font-bold">100% Money Back</span>
+                        </div>
+                        <div class="border-t border-white/10 pt-2 flex justify-between text-sm font-extrabold text-white">
+                            <span>Total Payable:</span>
+                            <span id="escrow-total-display" class="text-emerald-400">PKR 52,500</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="openPaymentInfoModal()" class="w-1/2 py-3 bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-wallet"></i> View Wallets
+                        </button>
+                        <button onclick="openSupportModal()" class="w-1/2 py-3 btn-brand rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-headset"></i> Get Support
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CLIENT SUPPORT TICKET MODAL -->
+    <div id="support-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-white/10 rounded-3xl max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-headset text-cyan-400"></i> 24/7 Client Support Help Center
+                    </h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Need help with a deal, account transfer, or payment issue?</p>
+                </div>
+                <button onclick="closeSupportModal()" class="text-gray-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Active Support Contact Cards (Privacy Protected) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-cyan-500/30 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-base">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider block font-semibold">24/7 Client Help Desk</span>
+                        <p class="text-xs font-bold text-white mt-0.5">Priority Live Support Active</p>
+                    </div>
+                </div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-emerald-500/30 flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-base">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-gray-400 uppercase tracking-wider block font-semibold">Escrow Protection</span>
+                        <p class="text-xs font-bold text-emerald-400 mt-0.5">100% Verified Safe Deal</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 bg-cyan-950/50 border border-cyan-500/40 rounded-2xl mb-4 text-xs text-cyan-300 flex items-center gap-2">
+                <i class="fa-solid fa-crown text-amber-400 text-base"></i>
+                <div>
+                    <strong class="text-white block">Direct Admin Gateway Active</strong>
+                    <span>Your message below will deliver directly to Master Owner Zubair's Admin Panel in real-time.</span>
+                </div>
+            </div>
+
+            <!-- Support Ticket Form -->
+            <form id="support-ticket-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Your Full Name *</label>
+                    <input type="text" id="ticket-name" required placeholder="e.g. Hassan Raza" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Your Phone / WhatsApp Number *</label>
+                    <input type="text" id="ticket-phone" required placeholder="+92 300 1234567" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Issue Category *</label>
+                    <select id="ticket-issue-type" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500">
+                        <option value="Escrow Deal Assistance">Escrow Deal Transfer Issue</option>
+                        <option value="Payment / Wallet Question">Payment / Wallet Deposit Query</option>
+                        <option value="SMM Growth Service Help">SMM Service Delivery Help</option>
+                        <option value="Account Listing Question">Seller Listing Question</option>
+                        <option value="Other Urgent Issue">Other Urgent Technical Query</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Describe Your Problem / Query *</label>
+                    <textarea id="ticket-message" required rows="3" placeholder="Provide details about your deal ID or account issue..." class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-500"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-4 border-t border-white/10">
+                    <button type="submit" class="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-paper-plane"></i> Direct Admin Inbox
+                    </button>
+                    <button type="button" onclick="sendSupportGmail()" class="w-full py-3 bg-red-600 hover:bg-red-500 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-envelope"></i> Send via Gmail
+                    </button>
+                    <button type="button" onclick="sendSupportWhatsApp()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Send via WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PROOF SCREENSHOT HIGH-RES LIGHTBOX MODAL -->
+    <div id="proof-image-lightbox-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 backdrop-blur-md p-4">
+        <div class="bg-slate-950 border border-amber-500/40 p-4 sm:p-6 rounded-3xl max-w-4xl w-full shadow-2xl relative">
+            <button onclick="closeFullImageModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-camera text-amber-400"></i> High-Resolution Account Proof Screenshot
+            </h3>
+            <div class="p-2 bg-slate-900 rounded-2xl border border-white/10 text-center max-h-[75vh] overflow-hidden flex items-center justify-center">
+                <img id="lightbox-full-img" class="max-h-[70vh] w-full object-contain rounded-xl shadow-2xl" alt="Account Proof Screenshot">
+            </div>
+        </div>
+    </div>
+
+    <!-- WRITE CUSTOMER REVIEW MODAL -->
+    <div id="review-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-amber-500/40 rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeReviewModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl mx-auto mb-2 shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <h3 class="text-lg font-black text-white">Write a Customer Review</h3>
+                <p class="text-xs text-gray-400 mt-1">Share your experience with Zubair Digital Hub Escrow & Services</p>
+            </div>
+
+            <form id="add-review-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Your Full Name *</label>
+                    <input type="text" id="rev-name" required placeholder="e.g. Muhammad Usman" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">City / Country</label>
+                        <input type="text" id="rev-city" placeholder="Lahore, PK" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Platform</label>
+                        <select id="rev-platform" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                            <option value="youtube">YouTube</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="tiktok">TikTok</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="twitter">Twitter / X</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Service or Account Purchased *</label>
+                    <input type="text" id="rev-item" required placeholder="e.g. 100K Monetized Gaming Channel" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Rating *</label>
+                    <select id="rev-rating" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-amber-400 font-bold focus:outline-none focus:border-amber-500">
+                        <option value="5">★★★★★ 5 Stars (Excellent Service)</option>
+                        <option value="4">★★★★☆ 4 Stars (Very Good)</option>
+                        <option value="3">★★★☆☆ 3 Stars (Good)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Your Review Comment *</label>
+                    <textarea id="rev-comment" rows="3" required placeholder="Tell others about your escrow deal experience..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-xs text-white resize-none focus:outline-none focus:border-amber-500"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3">
+                    <button type="button" onclick="closeReviewModal()" class="px-4 py-2.5 bg-gray-800 text-gray-300 text-xs font-semibold rounded-xl">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs shadow flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Customer Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PAYMENT METHODS & WALLET ADDRESSES MODAL -->
+    <div id="payment-info-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-white/10 rounded-3xl max-w-lg w-full p-6 sm:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-wallet text-emerald-400"></i> Official Wallet Addresses
+                    </h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Deposit Escrow funds in USDT ($) or PKR (Rs)</p>
+                </div>
+                <button onclick="closePaymentInfoModal()" class="text-gray-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="payment-info-content">
+                <!-- Dynamic Content Rendered in JavaScript -->
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="closePaymentInfoModal()" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-xl text-xs font-bold">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MASTER ADMIN LOGIN MODAL -->
+    <div id="admin-login-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-white/10 rounded-3xl max-w-md w-full p-6 sm:p-8">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h3 class="text-xl font-extrabold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield text-amber-400"></i> Master Admin Access
+                    </h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Zubair Digital Hub Management Portal</p>
+                </div>
+                <button onclick="closeAdminLoginModal()" class="text-gray-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="admin-login-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Master Username</label>
+                    <input type="text" id="login-username" required value="zubair" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Master Password</label>
+                    <input type="password" id="login-password" required value="zubair123" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-300 font-mono">
+                    💡 <strong>Default Credentials:</strong><br>
+                    Username: <span class="font-bold text-white">zubair</span><br>
+                    Password: <span class="font-bold text-white">zubair123</span>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                    <button type="button" onclick="closeAdminLoginModal()" class="px-4 py-2.5 bg-gray-800 text-gray-300 text-xs font-semibold rounded-xl">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 btn-brand rounded-xl text-xs font-bold">Login to Admin Panel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FULL SCREEN FAMESWAP-STYLE MASTER DASHBOARD VIEW -->
+    <div id="admin-dashboard-modal" class="fixed inset-0 z-50 hidden bg-[#0c1017] overflow-hidden">
+        <div class="flex h-screen w-screen overflow-hidden text-gray-300 font-sans">
+            
+            <!-- LEFT DARK SIDEBAR -->
+            <aside class="w-64 bg-[#080b11] border-r border-white/5 flex flex-col justify-between p-4 flex-shrink-0">
+                <div>
+                    <!-- Sidebar Header Logo -->
+                    <div class="flex items-center gap-3 px-3 py-3 mb-6 border-b border-white/5">
+                        <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-sm font-bold border border-amber-500/30">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-white block leading-tight">Zubair Digital Hub</span>
+                            <span class="text-[10px] text-gray-500 font-mono uppercase">Master Dashboard</span>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Navigation Links -->
+                    <nav class="space-y-1 text-xs">
+                        <a href="#" onclick="closeAdminDashboardModal()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <i class="fa-solid fa-magnifying-glass text-sm"></i> Browse
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/10 text-white font-bold transition">
+                            <i class="fa-solid fa-table-cells-large text-sm text-indigo-400"></i> Dashboard
+                        </a>
+                        <a href="#" onclick="openSupportModal()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <i class="fa-solid fa-comments text-sm"></i> Messages
+                        </a>
+                        <a href="#admin-listings-sec" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <i class="fa-solid fa-list-check text-sm"></i> Listings
+                        </a>
+                        <a href="#" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <i class="fa-solid fa-dollar-sign text-sm text-emerald-400"></i> Offers
+                        </a>
+                        <a href="#escrow-section" onclick="closeAdminDashboardModal()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <i class="fa-solid fa-shield-halved text-sm text-amber-400"></i> Escrow Deals
+                        </a>
+                        <a href="#" onclick="openPaymentInfoModal()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <i class="fa-solid fa-wallet text-sm text-emerald-400"></i> Balance ($0.00)
+                        </a>
+                        
+                        <div class="pt-3">
+                            <button onclick="openSellModal(); closeAdminDashboardModal();" class="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 to-orange-600 text-slate-950 font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20">
+                                <i class="fa-solid fa-crown"></i> + Premium Listing
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Left Sidebar Profile Footer -->
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-full btn-brand flex items-center justify-center font-bold text-white text-xs">
+                            Z
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-white">zubair001</p>
+                            <span class="text-[10px] text-emerald-400 font-semibold">● Master Admin</span>
+                        </div>
+                    </div>
+                    <button onclick="logoutAdmin()" title="Logout" class="text-gray-500 hover:text-red-400 text-sm">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </aside>
+
+            <!-- MAIN DASHBOARD CONTENT AREA -->
+            <main class="flex-1 overflow-y-auto bg-[#0c1017] p-6 lg:p-8">
+                
+                <!-- Top Header Bar -->
+                <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                    <div class="flex items-center gap-3">
+                        <h2 class="text-xl font-extrabold text-white">Dashboard</h2>
+                        <span class="px-2.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold">Online</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="openSupportModal()" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 flex items-center justify-center text-sm">
+                            <i class="fa-regular fa-bell"></i>
+                        </button>
+                        <button onclick="closeAdminDashboardModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl transition">
+                            <i class="fa-solid fa-arrow-left"></i> Return to Site
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Greeting Header -->
+                <div class="mb-6">
+                    <h1 class="text-2xl font-black text-white">Peak engagement time, zubair001!</h1>
+                    <p class="text-xs text-gray-400 mt-1">Manage listings, wallet addresses, live exchange rates, and escrow deals from your master hub.</p>
+                </div>
+
+                <!-- Notification Alert Banner (Fameswap Style) -->
+                <div class="mb-6 bg-emerald-950/40 border border-emerald-500/30 p-4 rounded-2xl flex items-center justify-between text-xs text-emerald-300">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                        <div>
+                            <strong class="block text-white">Discounts on listings & Escrow Protection</strong>
+                            <span>There is no longer a fee to apply discount promotions on your listings. Enjoy!</span>
+                        </div>
+                    </div>
+                    <span class="text-[10px] text-gray-500 font-mono">Aug 26, 2026</span>
+                </div>
+
+                <!-- Profile Completion Progress Bar -->
+                <div class="mb-8 bg-slate-900/60 border border-white/5 p-5 rounded-2xl">
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Complete your profile</h4>
+                        <span class="text-xs font-mono text-gray-400 font-bold">2/3</span>
+                    </div>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden mb-4 border border-white/5">
+                        <div class="bg-emerald-500 h-full rounded-full" style="width: 66%;"></div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                        <div class="flex items-center gap-2 text-emerald-400 font-medium">
+                            <i class="fa-solid fa-circle-check"></i> Verify your phone number
+                        </div>
+                        <div class="flex items-center gap-2 text-emerald-400 font-medium">
+                            <i class="fa-solid fa-circle-check"></i> Add a profile photo
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-400 font-medium">
+                            <i class="fa-regular fa-circle"></i> List an account or send your first offer
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5 FAMESWAP METRIC STAT CARDS -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+                    <!-- Stat 1: Messages -->
+                    <div class="bg-[#101622] p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">MESSAGES</span>
+                            <i class="fa-regular fa-message text-indigo-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="text-3xl font-black text-white">0</span>
+                            <p class="text-[11px] text-gray-500 mt-1">unread messages</p>
+                            <p class="text-[10px] text-gray-600 mt-0.5">0 active threads in last 30 days</p>
+                        </div>
+                    </div>
+
+                    <!-- Stat 2: Offers -->
+                    <div class="bg-[#101622] p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">OFFERS</span>
+                            <i class="fa-solid fa-dollar-sign text-emerald-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="text-3xl font-black text-white">0</span>
+                            <p class="text-[11px] text-gray-500 mt-1">new offers</p>
+                            <p class="text-[10px] text-gray-600 mt-0.5">0 total offers in last 30 days</p>
+                        </div>
+                    </div>
+
+                    <!-- Stat 3: Escrows -->
+                    <div class="bg-[#101622] p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">ESCROWS</span>
+                            <i class="fa-solid fa-shield-halved text-amber-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="text-3xl font-black text-white">0</span>
+                            <p class="text-[11px] text-gray-500 mt-1">active escrows</p>
+                        </div>
+                    </div>
+
+                    <!-- Stat 4: Listings -->
+                    <div class="bg-[#101622] p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">LISTINGS</span>
+                            <i class="fa-solid fa-list text-purple-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <span id="dash-stat-listings-count" class="text-3xl font-black text-white">9</span>
+                            <p class="text-[11px] text-gray-500 mt-1">active listings</p>
+                        </div>
+                    </div>
+
+                    <!-- Stat 5: Balance -->
+                    <div class="bg-[#101622] p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider">BALANCE</span>
+                            <i class="fa-solid fa-wallet text-emerald-400 text-sm"></i>
+                        </div>
+                        <div>
+                            <span class="text-3xl font-black text-emerald-400">$0.00</span>
+                            <p class="text-[11px] text-gray-500 mt-1">available balance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIVITY HEATMAP MATRIX (FAMESWAP STYLE) -->
+                <div class="mb-8 bg-[#101622] p-5 rounded-2xl border border-white/5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-sm font-bold text-white">Activity Timeline Matrix</h4>
+                        <span class="text-xs text-gray-500">0 actions in the last year</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <div class="flex items-center gap-1 text-[10px] text-gray-500 mb-2 pl-6">
+                            <span class="w-12">Aug</span><span class="w-12">Sep</span><span class="w-12">Oct</span><span class="w-12">Nov</span><span class="w-12">Dec</span><span class="w-12">Jan</span><span class="w-12">Feb</span><span class="w-12">Mar</span><span class="w-12">Apr</span><span class="w-12">May</span><span class="w-12">Jun</span><span class="w-12">Jul</span><span class="w-12">Aug</span>
+                        </div>
+                        <div class="space-y-1 font-mono text-[10px]">
+                            <div class="flex items-center gap-1">
+                                <span class="w-6 text-gray-600">Mon</span>
+                                <div class="flex gap-1">
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-700"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="w-6 text-gray-600">Wed</span>
+                                <div class="flex gap-1">
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-600"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="w-6 text-gray-600">Fri</span>
+                                <div class="flex gap-1">
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-600"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-500"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-slate-900 border border-white/5"></span>
+                                    <span class="w-3 h-3 rounded-sm bg-emerald-400"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MANAGEMENT FORMS GRID -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- EDIT WALLET ADDRESSES & EXCHANGE RATE FORM -->
+                    <div class="bg-[#101622] p-5 rounded-2xl border border-emerald-500/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-wallet text-emerald-400"></i> Wallet Addresses & Exchange Rates
+                            </h3>
+                            <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded">USDT & Local</span>
+                        </div>
+                        <form id="admin-wallet-form" class="space-y-3">
+                            <div class="p-3 bg-emerald-950/40 border border-emerald-500/20 rounded-xl mb-3">
+                                <label class="block text-[11px] text-emerald-300 font-bold mb-1">Live USDT Exchange Rate (1 USDT = PKR Rate)</label>
+                                <input type="number" id="wallet-usdt-rate" value="280" step="0.5" placeholder="280" class="w-full bg-slate-950 border border-emerald-500/30 rounded-xl px-3 py-2 text-sm font-bold text-emerald-400">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">JazzCash Account</label>
+                                    <input type="text" id="wallet-jazzcash" placeholder="0300 1234567 (Zubair)" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">EasyPaisa Account</label>
+                                    <input type="text" id="wallet-easypaisa" placeholder="0300 1234567 (Zubair)" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">Bank Name</label>
+                                    <input type="text" id="wallet-bankname" placeholder="Meezan Bank / HBL" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">Bank IBAN</label>
+                                    <input type="text" id="wallet-bankacc" placeholder="0101 0102 0304..." class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">USDT Wallet (TRC20)</label>
+                                    <input type="text" id="wallet-usdt" placeholder="TRC20: TYourUsdtAddressHere" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">Binance Pay ID</label>
+                                    <input type="text" id="wallet-binance" placeholder="123456789" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                            </div>
+                            <div class="flex justify-end pt-2">
+                                <button type="submit" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold">Save Wallet Details</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- EDIT CLIENT SUPPORT CONTACT NUMBERS FOR ZUBAIR -->
+                    <div class="bg-[#101622] p-5 rounded-2xl border border-cyan-500/30">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-headset text-cyan-400"></i> Client Support Phone & WhatsApp
+                            </h3>
+                            <span class="text-[10px] bg-cyan-500/20 text-cyan-300 font-bold px-2 py-0.5 rounded">24/7 Desk</span>
+                        </div>
+                        <form id="admin-support-form" class="space-y-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">Phone Support</label>
+                                    <input type="text" id="admin-supp-phone" placeholder="+1 (800) 555-0199" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">WhatsApp Number</label>
+                                    <input type="text" id="admin-supp-wa" placeholder="+1 800 555 0199" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-emerald-400 font-mono">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">Support Email</label>
+                                    <input type="text" id="admin-supp-email" placeholder="support@zubairdigitalhub.com" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] text-gray-400 mb-1">Hours Tagline</label>
+                                    <input type="text" id="admin-supp-hours" placeholder="24/7 Priority Support" class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                                </div>
+                            </div>
+                            <div class="flex justify-end pt-2">
+                                <button type="submit" class="px-5 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold">Save Support Contacts</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Manage Listings Table -->
+                <div id="admin-listings-sec" class="mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-sm font-bold text-white">Manage Listings Inventory</h3>
+                        <button onclick="openSellModal(); closeAdminDashboardModal();" class="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold">+ Add New Listing</button>
+                    </div>
+                    <div class="bg-[#101622] rounded-2xl border border-white/10 p-4 max-h-60 overflow-y-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-[11px] text-gray-400 uppercase border-b border-white/10 pb-2">
+                                    <th class="pb-2 px-2">Title</th>
+                                    <th class="pb-2 px-2">Platform</th>
+                                    <th class="pb-2 px-2">Price</th>
+                                    <th class="pb-2 px-2 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-listings-table">
+                                <!-- Dynamic Table Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Manage Customer Reviews -->
+                <div class="mb-8">
+                    <h3 class="text-sm font-bold text-white mb-3">Manage Customer Reviews</h3>
+                    <div class="bg-[#101622] rounded-2xl border border-white/10 p-4 max-h-60 overflow-y-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-[11px] text-gray-400 uppercase border-b border-white/10 pb-2">
+                                    <th class="pb-2 px-2">Name</th>
+                                    <th class="pb-2 px-2">Rating</th>
+                                    <th class="pb-2 px-2">Comment</th>
+                                    <th class="pb-2 px-2 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-reviews-table">
+                                <!-- Dynamic Table Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Change Master Password Form -->
+                <div class="bg-[#101622] p-5 rounded-2xl border border-white/10">
+                    <h4 class="text-sm font-bold text-white mb-2">Change Master Login Credentials</h4>
+                    <form id="admin-cred-form" class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">New Username</label>
+                            <input type="text" id="new-username" placeholder="New username" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-gray-400 mb-1">New Password</label>
+                            <input type="password" id="new-password" placeholder="New password" required class="w-full bg-slate-950 border border-white/10 rounded-xl px-3 py-2 text-xs text-white">
+                        </div>
+                        <button type="submit" class="py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold">Update Login Password</button>
+                    </form>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- FLOATING CLIENT SUPPORT BUTTON (BOTTOM LEFT) -->
+    <button onclick="openSupportModal()" class="fixed bottom-6 left-6 z-40 bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-3 rounded-full flex items-center gap-2 shadow-2xl shadow-cyan-500/50 hover:scale-105 transition-transform text-xs font-bold">
+        <i class="fa-solid fa-headset text-base"></i> Client Support
+    </button>
+
+    <!-- Floating Gmail / Email Button (BOTTOM RIGHT) -->
+    <a href="mailto:support@zubairdigitalhub.com?subject=Client%20Inquiry%20-%20Zubair%20Digital%20Hub" target="_blank" title="Send Email / Gmail Inquiry" class="fixed bottom-24 right-6 z-40 bg-red-600 hover:bg-red-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl shadow-red-600/50 hover:scale-110 transition-transform">
+        <i class="fa-solid fa-envelope"></i>
+    </a>
+
+    <!-- Floating WhatsApp Button (BOTTOM RIGHT) -->
+    <a id="floating-wa-btn" href="https://wa.me/923023632638?text=Hello%20Zubair%20Digital%20Hub!%20I%20have%20an%20inquiry." target="_blank" class="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-400 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl shadow-emerald-500/50 hover:scale-110 transition-transform">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <span class="text-xl font-extrabold text-white flex items-center gap-2">
+                        Zubair <span class="gradient-text">Digital Hub</span>
+                    </span>
+                    <p class="text-xs text-gray-400 mt-3 leading-relaxed">
+                        Global premier social media marketplace for YouTube, Facebook, TikTok, Instagram & Twitter account trading and growth services. Accepted currencies: USDT ($) & Local Currencies.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Supported Platforms</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#" onclick="switchPlatform('youtube')" class="hover:text-red-400 transition"><i class="fa-brands fa-youtube mr-1.5 text-red-500"></i> YouTube Monetized Channels</a></li>
+                        <li><a href="#" onclick="switchPlatform('facebook')" class="hover:text-blue-400 transition"><i class="fa-brands fa-facebook mr-1.5 text-blue-500"></i> Facebook Instream Pages</a></li>
+                        <li><a href="#" onclick="switchPlatform('tiktok')" class="hover:text-cyan-400 transition"><i class="fa-brands fa-tiktok mr-1.5 text-cyan-400"></i> TikTok Beta Creator Accounts</a></li>
+                        <li><a href="#" onclick="switchPlatform('instagram')" class="hover:text-pink-400 transition"><i class="fa-brands fa-instagram mr-1.5 text-pink-500"></i> Instagram Theme Pages</a></li>
+                        <li><a href="#" onclick="switchPlatform('twitter')" class="hover:text-blue-400 transition"><i class="fa-brands fa-x-twitter mr-1.5 text-blue-400"></i> Twitter Monetized Handles</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Escrow & Help Desk</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#escrow-section" class="hover:text-emerald-400 transition"><i class="fa-solid fa-shield-check mr-1.5 text-emerald-400"></i> 100% Safe Escrow Transfer</a></li>
+                        <li><a href="#" onclick="openSupportModal()" class="hover:text-cyan-400 transition"><i class="fa-solid fa-headset mr-1.5 text-cyan-400"></i> 24/7 Client Support Portal</a></li>
+                        <li><a href="#" onclick="openPaymentInfoModal()" class="hover:text-emerald-400 transition"><i class="fa-solid fa-wallet mr-1.5 text-emerald-400"></i> View Payment Wallets (USDT/PKR)</a></li>
+                        <li><a href="#reviews-section" class="hover:text-amber-400 transition"><i class="fa-solid fa-star mr-1.5 text-amber-400"></i> Customer Reviews</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-4">Client Support</h4>
+                    <p class="text-xs text-gray-400 mb-2">Facing any issue or have an escrow query?</p>
+                    <button onclick="openSupportModal()" class="inline-flex items-center gap-2 px-4 py-2 bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 rounded-xl text-xs font-bold hover:bg-cyan-600/30 transition">
+                        <i class="fa-solid fa-headset text-sm"></i> Contact 24/7 Client Support Desk
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-white/5 pt-8 text-center text-xs text-gray-500">
+                <p>&copy; 2026 Zubair Digital Hub. All rights reserved. Designed for secure social media trading.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DIRECT DM CHAT WITH OWNER MODAL (DUAL OPTIONS: WHATSAPP OR DIRECT TO ADMIN PANEL) -->
+    <div id="direct-dm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="bg-slate-950 border border-emerald-500/40 p-6 sm:p-8 rounded-3xl max-w-md w-full shadow-2xl relative">
+            <button onclick="closeDirectDMModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl mx-auto mb-2 shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+                <h3 class="text-lg font-black text-white">Direct DM / Contact Owner</h3>
+                <p id="dm-target-item-title" class="text-xs text-amber-400 font-bold mt-0.5">Listing Inquiry</p>
+                <div class="mt-1.5 p-2 bg-slate-900 border border-white/10 rounded-xl">
+                    <span id="dm-target-item-link" class="text-[11px] text-cyan-400 font-mono break-all font-semibold">🔗 Link: index.html</span>
+                </div>
+            </div>
+
+            <!-- Direct Inbox Notice -->
+            <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl mb-4 text-xs text-amber-300 flex items-center gap-2">
+                <i class="fa-solid fa-crown text-amber-400 text-base"></i>
+                <div>
+                    <strong class="text-white block">Direct Admin Panel Inbox</strong>
+                    <span>Your message & offer will be delivered straight to Master Owner Zubair's Admin Inbox.</span>
+                </div>
+            </div>
+
+            <form id="direct-dm-form" class="space-y-3">
+                <input type="hidden" id="dm-listing-id">
+                <input type="hidden" id="dm-selected-mode" value="website">
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Your Name</label>
+                    <input type="text" id="dm-buyer-name" required placeholder="Enter your name" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Message & Custom Offer for Owner</label>
+                    <textarea id="dm-buyer-msg" rows="4" required placeholder="AOA, I am interested in buying this account. My offer is..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-xs text-white resize-none focus:outline-none focus:border-amber-500 font-mono leading-relaxed"></textarea>
+                </div>
+
+                <div id="dm-site-submit-area" style="display: block;">
+                    <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> Send Direct Message to Master Admin Panel Inbox
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button type="button" onclick="sendGmailDM()" class="w-full py-2.5 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-solid fa-envelope"></i> Send via Gmail
+                    </button>
+                    <button type="button" onclick="sendWhatsAppDM()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Send via WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FLOATING SIDE TAB BUTTON FOR GROWTH SERVICES -->
+    <button onclick="openServicesModal()" class="fixed right-0 top-1/2 -translate-y-1/2 z-40 bg-gradient-to-l from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-3 py-4 rounded-l-2xl shadow-2xl border-l-2 border-y-2 border-purple-400/50 text-xs font-black tracking-wider flex flex-col items-center gap-2 transition hover:-translate-x-1" title="Click to view all Social Media Growth Services">
+        <i class="fa-solid fa-rocket text-amber-400 text-base animate-bounce"></i>
+        <span class="[writing-mode:vertical-rl] rotate-180 uppercase tracking-widest text-[11px] font-extrabold">GROWTH SERVICES</span>
+    </button>
+
+    <!-- SOCIAL MEDIA GROWTH & MONETIZATION SERVICES MODAL -->
+    <div id="services-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-purple-500/40 rounded-3xl max-w-4xl w-full p-6 sm:p-8 max-h-[90vh] overflow-hidden flex flex-col shadow-2xl relative">
+            <button onclick="closeServicesModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="mb-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 text-xs font-bold uppercase tracking-wider mb-2">
+                    <i class="fa-solid fa-rocket"></i> Social Media Growth Boosters
+                </div>
+                <h3 class="text-2xl font-black text-white">Platform Growth & Monetization Services</h3>
+                <p class="text-xs text-gray-400 mt-1">Get Monetization Watch Hours, Subscribers, Followers, Page Approval & Instant View Pushes.</p>
+                
+                <!-- Category Filter Tabs & Currency Switcher inside Modal -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4 pt-3 border-t border-white/10">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="renderServices('all')" class="px-3 py-1.5 rounded-xl bg-purple-600 text-white text-xs font-bold shadow">All Services</button>
+                        <button onclick="renderServices('youtube')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-red-400 border border-red-500/30 text-xs font-bold hover:bg-red-500/20"><i class="fa-brands fa-youtube"></i> YouTube</button>
+                        <button onclick="renderServices('facebook')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-blue-400 border border-blue-500/30 text-xs font-bold hover:bg-blue-500/20"><i class="fa-brands fa-facebook"></i> Facebook</button>
+                        <button onclick="renderServices('tiktok')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-cyan-400 border border-cyan-500/30 text-xs font-bold hover:bg-cyan-500/20"><i class="fa-brands fa-tiktok"></i> TikTok</button>
+                        <button onclick="renderServices('instagram')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-pink-400 border border-pink-500/30 text-xs font-bold hover:bg-pink-500/20"><i class="fa-brands fa-instagram"></i> Instagram</button>
+                        <button onclick="renderServices('twitter')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-sky-400 border border-sky-500/30 text-xs font-bold hover:bg-sky-500/20"><i class="fa-brands fa-x-twitter"></i> Twitter / X</button>
+                    </div>
+
+                    <!-- Currency Switcher Toggle (PKR vs USDT) -->
+                    <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-white/10 text-xs flex-shrink-0 self-start sm:self-auto">
+                        <button onclick="switchCurrency('PKR')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-indigo-600 text-white shadow">PKR (Rs)</button>
+                        <button onclick="switchCurrency('USDT')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg text-emerald-400 hover:text-white flex items-center gap-1">
+                            <i class="fa-solid fa-coins text-emerald-400"></i> USDT ($)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Services Target Container inside Modal -->
+            <div id="services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-1 pb-4">
+                <!-- JavaScript Rendering -->
+            </div>
+        </div>
+    </div>
+
+    <!-- DEDICATED INDIVIDUAL SERVICE DETAILS MODAL -->
+    <div id="service-detail-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-purple-500/50 rounded-3xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto flex flex-col shadow-2xl relative">
+            <button onclick="closeServiceDetailModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl z-10 w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center border border-white/10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Banner Proof Graphic Image -->
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 mb-5 bg-slate-900">
+                <img id="sd-image" src="" alt="Service Proof Banner" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute top-3 left-3">
+                    <span id="sd-platform-badge" class="px-3 py-1 text-xs font-bold rounded-full border uppercase tracking-wider bg-purple-500/20 text-purple-300 border-purple-500/30">
+                        Platform Service
+                    </span>
+                </div>
+                <div class="absolute top-3 right-3">
+                    <span id="sd-rating-badge" class="px-3 py-1 text-xs font-bold rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        5.0 ★ Rating
+                    </span>
+                </div>
+            </div>
+
+            <!-- Title & Platform Tags -->
+            <div class="mb-4">
+                <h3 id="sd-title" class="text-2xl font-black text-white leading-tight">Service Title</h3>
+                <p id="sd-guarantee" class="text-sm font-bold text-emerald-400 mt-1.5 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Guarantee Information
+                </p>
+            </div>
+
+            <!-- Price Breakdown Box -->
+            <div class="bg-slate-900/90 border border-white/10 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                    <span class="text-[11px] text-gray-400 uppercase tracking-widest block font-bold">Official Package Pricing</span>
+                    <div class="flex items-center gap-3 mt-1">
+                        <span id="sd-price-pkr" class="text-lg font-black text-white">PKR 0</span>
+                        <span class="text-gray-600 font-bold">•</span>
+                        <span id="sd-price-usd" class="text-lg font-black text-emerald-400">$0 USDT</span>
+                    </div>
+                </div>
+                <div class="bg-purple-500/10 border border-purple-500/30 px-3 py-2 rounded-xl text-right">
+                    <span class="text-[10px] text-purple-300 uppercase tracking-wider block font-bold">Estimated Handover</span>
+                    <span id="sd-delivery" class="text-xs font-extrabold text-white">3-5 Days</span>
+                </div>
+            </div>
+
+            <!-- Features & Package Specs -->
+            <div class="mb-6">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-purple-400"></i> Package Features & Benefits
+                </h4>
+                <div id="sd-features-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <div class="flex items-center gap-2 text-gray-300 bg-slate-900/50 p-2.5 rounded-xl border border-white/5">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i> 100% Real & Organic Delivery
+                    </div>
+                    <div class="flex items-center gap-2 text-gray-300 bg-slate-900/50 p-2.5 rounded-xl border border-white/5">
+                        <i class="fa-solid fa-shield-heart text-indigo-400 text-sm"></i> Non-Drop Lifetime Replacement
+                    </div>
+                    <div class="flex items-center gap-2 text-gray-300 bg-slate-900/50 p-2.5 rounded-xl border border-white/5">
+                        <i class="fa-solid fa-bolt text-amber-400 text-sm"></i> Instant Order Processing
+                    </div>
+                    <div class="flex items-center gap-2 text-gray-300 bg-slate-900/50 p-2.5 rounded-xl border border-white/5">
+                        <i class="fa-solid fa-lock text-cyan-400 text-sm"></i> Safe & Secure (No Password Needed)
+                    </div>
+                </div>
+            </div>
+
+            <!-- Direct Order Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center gap-3 pt-4 border-t border-white/10">
+                <button id="sd-order-wa-btn" onclick="" class="w-full sm:w-1/2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-extrabold text-xs transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Order Now via WhatsApp
+                </button>
+                <button id="sd-order-inquiry-btn" onclick="" class="w-full sm:w-1/2 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl font-extrabold text-xs transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Send Direct Site Inquiry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

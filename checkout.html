@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout & Escrow Payment - Zubair Digital Hub</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-[#080b11] text-gray-200 min-h-screen selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- TOP HEADER -->
+    <header class="bg-slate-950/80 backdrop-blur-md border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl font-bold shadow-lg">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold text-white block leading-tight">
+                        Zubair <span class="gradient-text">Digital Hub</span>
+                    </span>
+                    <span class="text-[10px] text-amber-400 font-mono uppercase tracking-widest">Escrow Checkout Portal</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-full font-bold">
+                    <i class="fa-solid fa-lock"></i> 100% Escrow Protected
+                </span>
+                <a href="index.html" class="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Return to Website
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CHECKOUT CONTENT CONTAINER -->
+    <main class="max-w-6xl mx-auto px-4 py-8 sm:py-12">
+
+        <!-- Page Heading -->
+        <div class="text-center mb-10">
+            <span class="px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 text-xs font-bold uppercase tracking-wider">
+                Step 2 of 2 • Secure Escrow Payment
+            </span>
+            <h1 class="text-3xl sm:text-4xl font-black text-white mt-3">Complete Your Account Purchase</h1>
+            <p class="text-xs sm:text-sm text-gray-400 mt-2 max-w-xl mx-auto">
+                Your payment will be held safely in Zubair Digital Hub Escrow until you inspect and verify full account ownership transfer.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT COLUMN (8 COLS): PAYMENT METHODS & TERMS -->
+            <div class="lg:col-span-8 space-y-6">
+
+                <!-- STEP 1: PAYMENT METHOD SELECTION -->
+                <div class="bg-[#101622] p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-wallet text-emerald-400"></i> Select Deposit / Payment Method
+                    </h2>
+
+                    <!-- Payment Method Tabs -->
+                    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-6">
+                        <button type="button" onclick="selectPayTab('binance')" id="paytab-binance" class="p-3 rounded-2xl border bg-amber-500/20 border-amber-500 text-amber-400 font-bold text-xs flex flex-col items-center gap-1.5 transition">
+                            <i class="fa-solid fa-qrcode text-lg text-amber-400"></i> Binance Pay
+                        </button>
+                        <button type="button" onclick="selectPayTab('usdt')" id="paytab-usdt" class="p-3 rounded-2xl border bg-slate-900 border-white/10 text-gray-400 font-bold text-xs flex flex-col items-center gap-1.5 transition hover:border-white/30">
+                            <i class="fa-solid fa-coins text-lg text-emerald-400"></i> USDT (TRC20)
+                        </button>
+                        <button type="button" onclick="selectPayTab('jazzcash')" id="paytab-jazzcash" class="p-3 rounded-2xl border bg-slate-900 border-white/10 text-gray-400 font-bold text-xs flex flex-col items-center gap-1.5 transition hover:border-white/30">
+                            <i class="fa-solid fa-mobile-screen-button text-lg text-red-400"></i> JazzCash
+                        </button>
+                        <button type="button" onclick="selectPayTab('easypaisa')" id="paytab-easypaisa" class="p-3 rounded-2xl border bg-slate-900 border-white/10 text-gray-400 font-bold text-xs flex flex-col items-center gap-1.5 transition hover:border-white/30">
+                            <i class="fa-solid fa-wallet text-lg text-emerald-400"></i> EasyPaisa
+                        </button>
+                        <button type="button" onclick="selectPayTab('bank')" id="paytab-bank" class="p-3 rounded-2xl border bg-slate-900 border-white/10 text-gray-400 font-bold text-xs flex flex-col items-center gap-1.5 transition hover:border-white/30">
+                            <i class="fa-solid fa-building-columns text-lg text-cyan-400"></i> Bank IBAN
+                        </button>
+                    </div>
+
+                    <!-- PAYMENT DETAILS DISPLAY BOX -->
+                    <div class="bg-slate-950 p-5 rounded-2xl border border-white/10 space-y-4">
+                        
+                        <!-- BINANCE PAY CONTENT -->
+                        <div id="paybox-binance" class="space-y-3" style="display: block;">
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <span class="text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-qrcode text-amber-400"></i> Binance Pay Instant Deposit
+                                </span>
+                                <span id="co-binance-rate" class="text-emerald-400 font-bold font-mono">1 USDT = 280 PKR</span>
+                            </div>
+                            <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl space-y-2.5">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-gray-400">Binance Account Name:</span>
+                                    <strong id="co-binance-name" class="text-white font-mono font-bold text-sm">zubair zubi001</strong>
+                                </div>
+                                <div class="flex items-center justify-between text-xs pt-2 border-t border-white/10">
+                                    <span>Binance Pay ID: <strong id="co-binance-id-val" class="text-amber-400 font-mono text-sm">82187140</strong></span>
+                                    <button type="button" onclick="copyText('co-binance-id-val')" class="px-3.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-[11px] font-extrabold shadow">Copy ID</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- USDT TRC20 CONTENT -->
+                        <div id="paybox-usdt" class="space-y-3" style="display: none;">
+                            <div class="flex justify-between items-center text-xs mb-1">
+                                <span class="text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-coins text-emerald-400"></i> USDT (TRC20 Network Deposit)
+                                </span>
+                                <span id="co-usdt-rate" class="text-emerald-400 font-bold font-mono">1 USDT = 280 PKR</span>
+                            </div>
+                            <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl space-y-2.5">
+                                <span class="text-xs text-gray-400 block font-semibold">TRC20 Wallet Address:</span>
+                                <div class="flex items-center justify-between font-mono text-xs text-emerald-400 bg-slate-900 p-3 rounded-xl border border-emerald-500/30">
+                                    <strong id="co-usdt-address" class="break-all font-bold">TMYEB4BvVxFi1AvrLZJsVP6JWm51BwzCvm</strong>
+                                    <button type="button" onclick="copyText('co-usdt-address')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-[10px] font-bold">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- JAZZCASH CONTENT -->
+                        <div id="paybox-jazzcash" class="space-y-3" style="display: none;">
+                            <span class="text-xs text-gray-400 block font-semibold">JazzCash Account Details</span>
+                            <div class="p-4 bg-slate-900 rounded-xl border border-red-500/30 flex items-center justify-between text-xs font-mono text-white">
+                                <span id="co-jazzcash-info" class="font-bold">Loading JazzCash Account...</span>
+                                <button type="button" onclick="copyText('co-jazzcash-info')" class="px-3 py-1 bg-red-600/30 text-white rounded-lg text-[10px] font-bold">Copy</button>
+                            </div>
+                        </div>
+
+                        <!-- EASYPAISA CONTENT -->
+                        <div id="paybox-easypaisa" class="space-y-3" style="display: none;">
+                            <span class="text-xs text-gray-400 block font-semibold">EasyPaisa Account Details</span>
+                            <div class="p-4 bg-slate-900 rounded-xl border border-emerald-500/30 flex items-center justify-between text-xs font-mono text-white">
+                                <span id="co-easypaisa-info" class="font-bold">Loading EasyPaisa Account...</span>
+                                <button type="button" onclick="copyText('co-easypaisa-info')" class="px-3 py-1 bg-emerald-600/30 text-white rounded-lg text-[10px] font-bold">Copy</button>
+                            </div>
+                        </div>
+
+                        <!-- BANK CONTENT -->
+                        <div id="paybox-bank" class="space-y-3" style="display: none;">
+                            <span class="text-xs text-gray-400 block font-semibold">Bank Wire & IBAN Transfer Details</span>
+                            <div class="p-4 bg-slate-900 rounded-xl border border-cyan-500/30 space-y-1 text-xs font-mono text-white">
+                                <div>Bank Name: <strong id="co-bank-name" class="text-cyan-400">Loading...</strong></div>
+                                <div class="flex items-center justify-between pt-1">
+                                    <span>Account / IBAN: <strong id="co-bank-acc" class="text-white">Loading...</strong></span>
+                                    <button type="button" onclick="copyText('co-bank-acc')" class="px-3 py-1 bg-cyan-600/30 text-white rounded-lg text-[10px] font-bold">Copy</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- STEP 2: OFFICIAL TERMS & CONDITIONS -->
+                <div class="bg-[#101622] p-6 sm:p-8 rounded-3xl border border-amber-500/30 shadow-2xl">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-file-contract text-amber-400"></i> Terms & Conditions for YouTube Channel & Marketplace Deals
+                    </h2>
+
+                    <div class="space-y-4 text-xs text-gray-300 bg-slate-950 p-5 rounded-2xl border border-white/10 max-h-80 overflow-y-auto leading-relaxed font-sans">
+                        <div>
+                            <strong class="text-white block text-sm mb-1">1. Channel Recovery Guarantee</strong>
+                            <p class="text-gray-400">A guarantee for channel recovery will be provided only according to the specific terms agreed upon before the deal. The duration and scope of the recovery guarantee will be clearly stated and confirmed.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">2. Monetization Disclaimer</strong>
+                            <p class="text-gray-400">For monetized channels, there is no guarantee that monetization will remain active after successful delivery. We do not guarantee future monetization status, revenue, RPM, earnings, views, or channel growth.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">3. AdSense Disclaimer</strong>
+                            <p class="text-gray-400">There is no guarantee that AdSense will remain active after delivery. Any future AdSense disablement, suspension, limitation, restriction, or other action taken by Google is outside our control.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">4. Responsibility After Delivery</strong>
+                            <p class="text-gray-400">Once the channel has been successfully delivered and transferred to the buyer, the buyer becomes responsible for the channel's future security, content, activities, settings, policy compliance, copyright matters, and overall management.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">5. YouTube and Google Actions</strong>
+                            <p class="text-gray-400">We are not responsible for any future action taken by YouTube or Google, including but not limited to strikes, warnings, demonetization, monetization suspension, channel suspension, channel termination, restrictions, limitations, or AdSense-related actions, unless specifically covered by the written agreement.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">6. No Future Performance Guarantee</strong>
+                            <p class="text-gray-400">We do not guarantee future views, subscribers, watch time, revenue, earnings, RPM, channel growth, or any other future performance of the channel.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">7. Payment and Special Conditions</strong>
+                            <p class="text-gray-400">All payment terms, guarantees, refunds, and special conditions must be clearly agreed upon before the deal is finalized.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">8. Written Agreement Only</strong>
+                            <p class="text-gray-400">Only the terms and conditions clearly agreed upon in writing before the payment will be considered valid. No additional guarantees, conditions, or claims will be accepted unless they were agreed upon in writing.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">9. Successful Delivery and Final Transaction</strong>
+                            <p class="text-gray-400">Once the channel or agreed service has been successfully delivered, the transaction will be considered complete and final, unless otherwise agreed upon in writing.</p>
+                        </div>
+
+                        <div>
+                            <strong class="text-white block text-sm mb-1">10. Acceptance of Terms</strong>
+                            <p class="text-gray-400">By proceeding with the deal, the buyer confirms that they have read, understood, and agreed to all the Terms & Conditions mentioned above.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center gap-3">
+                        <input type="checkbox" id="terms-checkbox" required class="w-4 h-4 accent-amber-500 rounded cursor-pointer">
+                        <label for="terms-checkbox" class="text-xs text-gray-200 font-semibold cursor-pointer">
+                            I have read, understood, and agree to all <strong>10 Terms & Conditions</strong> mentioned above.
+                        </label>
+                    </div>
+                </div>
+
+                <!-- STEP 3: SUBMIT PAYMENT PROOF & CONFIRMATION -->
+                <div class="bg-[#101622] p-6 sm:p-8 rounded-3xl border border-indigo-500/30 shadow-2xl">
+                    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check text-indigo-400"></i> Submit Deposit Details & Initiate Handover
+                    </h2>
+
+                    <form id="checkout-confirm-form" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Your Full Name</label>
+                                <input type="text" id="co-buyer-name" required placeholder="e.g. Usman Shah" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-300 mb-1">Your Contact WhatsApp / Phone</label>
+                                <input type="text" id="co-buyer-phone" required placeholder="+92 300 1234567" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1">Transaction ID / Payment Receipt Reference</label>
+                            <input type="text" id="co-trx-id" required placeholder="e.g. TRX-998811 or USDT Hash" class="w-full bg-slate-950 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-amber-400 font-mono">
+                        </div>
+
+                        <!-- MANDATORY PAYMENT RECEIPT SCREENSHOT UPLOAD -->
+                        <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl">
+                            <label class="block text-xs font-bold text-amber-300 mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-camera-retro text-amber-400"></i> Upload Payment Receipt Screenshot (MANDATORY PROOF) *
+                            </label>
+                            <p class="text-[11px] text-gray-400 mb-2">You MUST upload your payment transfer screenshot image. Submission is blocked without payment proof.</p>
+                            
+                            <input type="file" id="co-screenshot-file" accept="image/*" required onchange="handleScreenshotUpload(event)" class="block w-full text-xs text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 cursor-pointer bg-slate-950 p-2 rounded-xl border border-white/10">
+
+                            <!-- Red Alert Banner if not uploaded -->
+                            <div id="screenshot-error-banner" class="mt-2.5 p-2.5 bg-red-950/80 border border-red-500/50 rounded-xl text-xs text-red-300 font-semibold" style="display: none;">
+                                ❌ <strong>Payment Screenshot Required!</strong> You cannot proceed without uploading payment proof screenshot.
+                            </div>
+
+                            <!-- Live Image Preview -->
+                            <div id="screenshot-preview-box" class="mt-3 p-3 bg-slate-950 rounded-xl border border-emerald-500/30" style="display: none;">
+                                <span class="text-[10px] text-emerald-400 font-bold block mb-1">✓ Payment Receipt Screenshot Uploaded & Attached</span>
+                                <img id="screenshot-img-preview" class="max-h-44 rounded-lg border border-white/10 object-contain mx-auto shadow" alt="Payment Proof Preview">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            <button type="submit" class="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-shield-check"></i> Submit Escrow Deposit & Order
+                            </button>
+                            <button type="button" onclick="contactEscrowOfficerWA()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-base"></i> Confirm via WhatsApp Escrow Officer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN (4 COLS): SELECTED ITEM SUMMARY ORDER CARD -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-[#101622] p-6 rounded-3xl border border-amber-500/40 shadow-2xl sticky top-28">
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Order Summary</h3>
+
+                    <div id="checkout-listing-card" class="space-y-4">
+                        <div class="p-4 bg-slate-950 rounded-2xl border border-white/10">
+                            <span id="co-item-platform" class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-400 uppercase border border-indigo-500/30">
+                                YOUTUBE
+                            </span>
+                            <h4 id="co-item-title" class="text-base font-extrabold text-white mt-2 leading-snug">
+                                Gaming & Tech Channel (125K Subscribers)
+                            </h4>
+                            <p id="co-item-handle" class="text-xs text-gray-400 font-mono mt-1">@TechGamerGlobal</p>
+                        </div>
+
+                        <div class="space-y-2 text-xs border-t border-b border-white/10 py-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Followers / Audience</span>
+                                <strong id="co-item-followers" class="text-white font-mono">125,000</strong>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Monetization Status</span>
+                                <strong id="co-item-monetized" class="text-emerald-400 font-bold">Monetized</strong>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Escrow Fee</span>
+                                <strong class="text-emerald-400 font-bold">FREE (0% Buyer Fee)</strong>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-amber-500/10 border border-amber-500/30 rounded-2xl">
+                            <span class="text-[11px] text-amber-300 uppercase font-bold block">Total Amount Payable</span>
+                            <div id="co-total-pkr" class="text-2xl font-black text-white mt-1">PKR 245,000</div>
+                            <div id="co-total-usdt" class="text-xs font-bold text-emerald-400 font-mono mt-0.5">$ 875 USDT</div>
+                        </div>
+
+                        <div class="p-3 bg-slate-950 rounded-xl text-[11px] text-gray-400 leading-relaxed">
+                            <i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i>
+                            Backed by <strong>Zubair Digital Hub Guarantee</strong>. Funds are protected until handover confirmation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="assets/js/data.js"></script>
+    <script>
+        let currentListing = null;
+        let paymentConfig = {};
+        let supportInfo = {};
+        let uploadedScreenshotBase64 = '';
+
+        function handleScreenshotUpload(event) {
+            const file = event.target.files && event.target.files[0];
+            const errBanner = document.getElementById('screenshot-error-banner');
+            const previewBox = document.getElementById('screenshot-preview-box');
+            const imgPreview = document.getElementById('screenshot-img-preview');
+
+            if (!file) {
+                uploadedScreenshotBase64 = '';
+                if (previewBox) previewBox.style.display = 'none';
+                return;
+            }
+
+            if (!file.type.startsWith('image/')) {
+                alert('Please select a valid image file (PNG, JPG, JPEG).');
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedScreenshotBase64 = e.target.result;
+                if (imgPreview) imgPreview.src = uploadedScreenshotBase64;
+                if (previewBox) previewBox.style.display = 'block';
+                if (errBanner) errBanner.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof loadListings === 'function') loadListings();
+            if (typeof loadPaymentMethods === 'function') loadPaymentMethods();
+            if (typeof loadSupportConfig === 'function') loadSupportConfig();
+            if (typeof loadInquiries === 'function') loadInquiries();
+            if (typeof loadDeals === 'function') loadDeals();
+
+            paymentConfig = window.paymentMethods || defaultPaymentMethods;
+            supportInfo = window.supportConfig || defaultSupportConfig;
+
+            // Read Listing ID from URL query parameters (e.g. checkout.html?id=yt-101)
+            const urlParams = new URLSearchParams(window.location.search);
+            const listingId = urlParams.get('id') || (window.allListings && window.allListings[0]?.id) || 'yt-101';
+
+            currentListing = (window.allListings || []).find(l => l.id === listingId) || window.allListings[0];
+
+            renderCheckoutListingSummary();
+            renderCheckoutPaymentDetails();
+
+            // Checkout Form Submit
+            const confirmForm = document.getElementById('checkout-confirm-form');
+            if (confirmForm) {
+                confirmForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+
+                    const isChecked = document.getElementById('terms-checkbox')?.checked;
+                    if (!isChecked) {
+                        alert('⚠️ Please check and agree to the Escrow Terms & Conditions before submitting.');
+                        return;
+                    }
+
+                    if (!uploadedScreenshotBase64) {
+                        const errBanner = document.getElementById('screenshot-error-banner');
+                        if (errBanner) errBanner.style.display = 'block';
+                        alert('❌ PAYMENT RECEIPT SCREENSHOT REQUIRED!\n\nYou MUST upload your payment transfer screenshot image to proceed. Order submission is blocked without payment proof.');
+                        return;
+                    }
+
+                    const name = document.getElementById('co-buyer-name')?.value || 'Buyer';
+                    const phone = document.getElementById('co-buyer-phone')?.value || '';
+                    const trxId = document.getElementById('co-trx-id')?.value || 'TRX-REF';
+
+                    const newInquiry = {
+                        id: `ESC-${Math.floor(1000 + Math.random() * 9000)}`,
+                        clientName: name,
+                        phoneWhatsapp: phone,
+                        email: `${name.toLowerCase().replace(/\s+/g, '')}@client.com`,
+                        accountInterested: currentListing ? `${currentListing.title} (${currentListing.handle})` : 'Escrow Order',
+                        offeredAmount: currentListing ? `PKR ${currentListing.price.toLocaleString()}` : 'PKR 0',
+                        messageText: `[NEW ESCROW ORDER WITH PAYMENT SCREENSHOT]\nTrx ID / Ref: ${trxId}\nItem: ${currentListing?.title}\nPrice: PKR ${currentListing?.price.toLocaleString()}`,
+                        receiptScreenshot: uploadedScreenshotBase64,
+                        date: 'Just now',
+                        status: 'Unread / New'
+                    };
+
+                    if (!window.allInquiries) window.allInquiries = [];
+                    window.allInquiries.unshift(newInquiry);
+                    localStorage.setItem('zdh_inquiries', JSON.stringify(window.allInquiries));
+
+                    alert(`🎉 ESCROW ORDER & PAYMENT SCREENSHOT SUBMITTED SUCCESSFULLY!\n\nThank you ${name}.\nYour deposit screenshot reference (${trxId}) has been received in Master Admin Panel.`);
+                    window.location.href = "index.html";
+                });
+            }
+        });
+
+        function renderCheckoutListingSummary() {
+            if (!currentListing) return;
+
+            if (document.getElementById('co-item-platform')) document.getElementById('co-item-platform').innerText = currentListing.platform.toUpperCase();
+            if (document.getElementById('co-item-title')) document.getElementById('co-item-title').innerText = currentListing.title;
+            if (document.getElementById('co-item-handle')) document.getElementById('co-item-handle').innerText = `${currentListing.handle} • ${currentListing.niche}`;
+            if (document.getElementById('co-item-followers')) document.getElementById('co-item-followers').innerText = currentListing.followers;
+            if (document.getElementById('co-item-monetized')) document.getElementById('co-item-monetized').innerText = currentListing.monetized ? 'Monetized' : 'Non-Monetized';
+
+            const rate = parseFloat(paymentConfig.exchangeRate || '280');
+            const usdtVal = Math.round(currentListing.price / rate);
+
+            if (document.getElementById('co-total-pkr')) document.getElementById('co-total-pkr').innerText = `PKR ${currentListing.price.toLocaleString()}`;
+            if (document.getElementById('co-total-usdt')) document.getElementById('co-total-usdt').innerText = `$ ${usdtVal.toLocaleString()} USDT`;
+        }
+
+        function renderCheckoutPaymentDetails() {
+            const pm = paymentConfig;
+            if (document.getElementById('co-binance-rate')) document.getElementById('co-binance-rate').innerText = `1 USDT = ${pm.exchangeRate || 280} PKR`;
+            if (document.getElementById('co-binance-name')) document.getElementById('co-binance-name').innerText = "zubair zubi001";
+            if (document.getElementById('co-binance-id-val')) document.getElementById('co-binance-id-val').innerText = "82187140";
+
+            if (document.getElementById('co-usdt-rate')) document.getElementById('co-usdt-rate').innerText = `1 USDT = ${pm.exchangeRate || 280} PKR`;
+            if (document.getElementById('co-usdt-address')) document.getElementById('co-usdt-address').innerText = pm.usdtWallet || 'TMYEB4BvVxFi1AvrLZJsVP6JWm51BwzCvm';
+
+            if (document.getElementById('co-jazzcash-info')) document.getElementById('co-jazzcash-info').innerText = "+92 308 3727339 (Muhammad zubair zafar)";
+            if (document.getElementById('co-easypaisa-info')) document.getElementById('co-easypaisa-info').innerText = "+92 302 3632638 (Muhammad zubair zafar)";
+            if (document.getElementById('co-bank-name')) document.getElementById('co-bank-name').innerText = "United Bank Limited (UBL)";
+            if (document.getElementById('co-bank-acc')) document.getElementById('co-bank-acc').innerText = "PK24UNIL0109000378922612 (Zubair digital hub)";
+        }
+
+        function selectPayTab(tab) {
+            const tabs = ['binance', 'usdt', 'jazzcash', 'easypaisa', 'bank'];
+            tabs.forEach(t => {
+                const box = document.getElementById(`paybox-${t}`);
+                const btn = document.getElementById(`paytab-${t}`);
+                if (box) box.style.display = 'none';
+                if (btn) btn.className = "p-3 rounded-2xl border bg-slate-900 border-white/10 text-gray-400 font-bold text-xs flex flex-col items-center gap-1.5 transition hover:border-white/30";
+            });
+
+            const activeBox = document.getElementById(`paybox-${tab}`);
+            const activeBtn = document.getElementById(`paytab-${tab}`);
+            if (activeBox) activeBox.style.display = 'block';
+            if (activeBtn) activeBtn.className = "p-3 rounded-2xl border bg-amber-500/20 border-amber-500 text-amber-400 font-bold text-xs flex flex-col items-center gap-1.5 transition";
+        }
+
+        function copyText(elemId) {
+            const elem = document.getElementById(elemId);
+            if (elem) {
+                navigator.clipboard.writeText(elem.innerText);
+                alert('Copied to clipboard: ' + elem.innerText);
+            }
+        }
+
+        function contactEscrowOfficerWA() {
+            if (!currentListing) return;
+            const name = document.getElementById('co-buyer-name')?.value || 'Buyer';
+            const phone = document.getElementById('co-buyer-phone')?.value || '';
+            const trxId = document.getElementById('co-trx-id')?.value || 'TRX-REF';
+
+            const rate = parseFloat(paymentConfig.exchangeRate || '280');
+            const usdtVal = Math.round(currentListing.price / rate);
+
+            const msg = `Hello Zubair Digital Hub Escrow Officer!\n\n` +
+                `📌 *CHECKOUT ESCROW DEPOSIT CONFIRMATION*\n` +
+                `👤 *Buyer Name:* ${name}\n` +
+                `📞 *Buyer Phone:* ${phone}\n` +
+                `📺 *Listing Item:* ${currentListing.title}\n` +
+                `💰 *Payable Amount:* PKR ${currentListing.price.toLocaleString()} ($${usdtVal} USDT)\n` +
+                `🧾 *Trx ID / Ref:* ${trxId}\n\n` +
+                `Please verify deposit and initiate credential handover.`;
+
+            window.open(`https://wa.me/${(supportInfo.supportWhatsapp || '').replace(/[^0-9]/g, '') || '923023632638'}?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
