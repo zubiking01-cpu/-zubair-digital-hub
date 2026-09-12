@@ -1,0 +1,196 @@
+/* Zubair Digital Hub Custom Styles */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    
+    /* Default Theme (Digital Hub Indigo / Cyan) */
+    --brand-primary: #6366f1;
+    --brand-primary-hover: #4f46e5;
+    --brand-secondary: #06b6d4;
+    --brand-accent: #10b981;
+    --theme-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+    --theme-glow: rgba(99, 102, 241, 0.25);
+    
+    /* Platform Color Definitions */
+    --yt-red: #ff0000;
+    --yt-gradient: linear-gradient(135deg, #ff0000 0%, #7a0000 100%);
+    --yt-glow: rgba(255, 0, 0, 0.35);
+    
+    --fb-blue: #1877f2;
+    --fb-gradient: linear-gradient(135deg, #1877f2 0%, #003680 100%);
+    --fb-glow: rgba(24, 119, 242, 0.35);
+    
+    --tt-pink: #ff0050;
+    --tt-cyan: #00f2fe;
+    --tt-gradient: linear-gradient(135deg, #00f2fe 0%, #ff0050 100%);
+    --tt-glow: rgba(0, 242, 254, 0.35);
+    
+    --ig-magenta: #e1306c;
+    --ig-gradient: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    --ig-glow: rgba(225, 48, 108, 0.35);
+    
+    --tw-blue: #1da1f2;
+    --tw-gradient: linear-gradient(135deg, #1da1f2 0%, #084c78 100%);
+    --tw-glow: rgba(29, 161, 242, 0.35);
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: #0b0f19;
+    color: #f3f4f6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+}
+
+/* Glassmorphism Card Effects */
+.glass-card {
+    background: rgba(17, 24, 39, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: var(--brand-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px -10px var(--theme-glow);
+}
+
+/* Platform Theme Dynamics & Background Imagery */
+body[data-platform="youtube"] {
+    --brand-primary: var(--yt-red);
+    --brand-primary-hover: #cc0000;
+    --theme-gradient: var(--yt-gradient);
+    --theme-glow: var(--yt-glow);
+}
+body[data-platform="youtube"] .hero-banner-section {
+    background: radial-gradient(circle at top center, rgba(255, 0, 0, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%),
+                linear-gradient(to bottom, rgba(11, 15, 25, 0.8), #0b0f19);
+}
+
+body[data-platform="facebook"] {
+    --brand-primary: var(--fb-blue);
+    --brand-primary-hover: #1464cc;
+    --theme-gradient: var(--fb-gradient);
+    --theme-glow: var(--fb-glow);
+}
+body[data-platform="facebook"] .hero-banner-section {
+    background: radial-gradient(circle at top center, rgba(24, 119, 242, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%),
+                linear-gradient(to bottom, rgba(11, 15, 25, 0.8), #0b0f19);
+}
+
+body[data-platform="tiktok"] {
+    --brand-primary: var(--tt-pink);
+    --brand-primary-hover: #d60043;
+    --theme-gradient: var(--tt-gradient);
+    --theme-glow: var(--tt-glow);
+}
+body[data-platform="tiktok"] .hero-banner-section {
+    background: radial-gradient(circle at top center, rgba(0, 242, 254, 0.2) 0%, rgba(255, 0, 80, 0.15) 50%, rgba(15, 23, 42, 0.95) 75%),
+                linear-gradient(to bottom, rgba(11, 15, 25, 0.8), #0b0f19);
+}
+
+body[data-platform="instagram"] {
+    --brand-primary: var(--ig-magenta);
+    --brand-primary-hover: #c12558;
+    --theme-gradient: var(--ig-gradient);
+    --theme-glow: var(--ig-glow);
+}
+body[data-platform="instagram"] .hero-banner-section {
+    background: radial-gradient(circle at top center, rgba(225, 48, 108, 0.25) 0%, rgba(131, 58, 180, 0.2) 50%, rgba(15, 23, 42, 0.95) 75%),
+                linear-gradient(to bottom, rgba(11, 15, 25, 0.8), #0b0f19);
+}
+
+body[data-platform="twitter"] {
+    --brand-primary: var(--tw-blue);
+    --brand-primary-hover: #1880c4;
+    --theme-gradient: var(--tw-gradient);
+    --theme-glow: var(--tw-glow);
+}
+body[data-platform="twitter"] .hero-banner-section {
+    background: radial-gradient(circle at top center, rgba(29, 161, 242, 0.25) 0%, rgba(15, 23, 42, 0.95) 75%),
+                linear-gradient(to bottom, rgba(11, 15, 25, 0.8), #0b0f19);
+}
+
+/* Custom Gradient Text */
+.gradient-text {
+    background: var(--theme-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-bg {
+    background: var(--theme-gradient);
+}
+
+/* Custom Button */
+.btn-brand {
+    background: var(--theme-gradient);
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px var(--theme-glow);
+}
+
+.btn-brand:hover {
+    opacity: 0.92;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--theme-glow);
+}
+
+/* Platform Badges */
+.badge-yt { background: rgba(255, 0, 0, 0.15); color: #ff4d4d; border: 1px solid rgba(255, 0, 0, 0.3); }
+.badge-fb { background: rgba(24, 119, 242, 0.15); color: #4895efff; border: 1px solid rgba(24, 119, 242, 0.3); }
+.badge-tt { background: rgba(0, 242, 254, 0.15); color: #00f2fe; border: 1px solid rgba(0, 242, 254, 0.3); }
+.badge-ig { background: rgba(225, 48, 108, 0.15); color: #ff5e97; border: 1px solid rgba(225, 48, 108, 0.3); }
+.badge-tw { background: rgba(29, 161, 242, 0.15); color: #4db5efff; border: 1px solid rgba(29, 161, 242, 0.3); }
+
+/* Platform Watermark Animation */
+.platform-watermark {
+    font-size: 15rem;
+    opacity: 0.04;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Animation Keyframes */
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+.animate-pulse-glow {
+    animation: pulseGlow 4s infinite ease-in-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #0b0f19;
+}
+::-webkit-scrollbar-thumb {
+    background: #1f2937;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #374151;
+}
+
+/* Modal Backdrop Blur */
+.modal-blur {
+    background: rgba(3, 7, 18, 0.85);
+    backdrop-filter: blur(8px);
+}
