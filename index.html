@@ -1289,6 +1289,97 @@
         </div>
     </div>
 
+    <!-- SELL ACCOUNT SUBMISSION MODAL (FOR USERS & SELLERS) -->
+    <div id="sell-modal" class="fixed inset-0 modal-blur z-50 hidden items-center justify-center p-4">
+        <div class="bg-slate-950 border border-emerald-500/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button onclick="closeSellModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-xl z-10 w-9 h-9 rounded-full bg-slate-900 flex items-center justify-center border border-white/10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xl mx-auto mb-2 shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-plus-circle"></i>
+                </div>
+                <h3 class="text-xl font-black text-white">List Your Social Account For Sale</h3>
+                <p class="text-xs text-gray-400 mt-1">Submit your channel details for Master Owner Zubair's Admin Approval</p>
+            </div>
+
+            <div class="p-3 bg-amber-500/10 border border-amber-500/30 rounded-2xl mb-4 text-xs text-amber-300 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-amber-400 text-base flex-shrink-0"></i>
+                <div>
+                    <strong class="text-white block">Escrow Verification Notice:</strong>
+                    <span>Your listing will be reviewed by Master Owner Zubair in the Admin Panel before going live on the site.</span>
+                </div>
+            </div>
+
+            <form id="sell-account-form" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Channel / Page / Handle Title *</label>
+                    <input type="text" id="sell-title" required placeholder="e.g. Gaming & Tech Channel (100K Subs)" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Platform *</label>
+                        <select id="sell-platform" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                            <option value="youtube">YouTube</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="tiktok">TikTok</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="twitter">Twitter / X</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Handle / Channel Link *</label>
+                        <input type="text" id="sell-handle" required placeholder="@channelname or URL" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Subscribers / Followers *</label>
+                        <input type="text" id="sell-followers" required placeholder="e.g. 50,000" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Niche / Category</label>
+                        <input type="text" id="sell-niche" placeholder="e.g. Gaming / Tech / Vlogs" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Asking Price (PKR) *</label>
+                        <input type="number" id="sell-price" required placeholder="85000" class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white font-bold focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1">Monetization Status *</label>
+                        <select id="sell-monetized" required class="w-full bg-slate-900 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-emerald-400 font-bold focus:outline-none focus:border-emerald-500">
+                            <option value="true">Monetized (AdSense / In-Stream / Beta)</option>
+                            <option value="false">Non-Monetized (Organic / Ready)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Your Contact / Phone Number (Optional)</label>
+                    <input type="text" id="sell-contact" placeholder="+92 300 1234567" class="w-full bg-slate-900 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-emerald-400 font-mono font-bold focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Description & Channel Details</label>
+                    <textarea id="sell-desc" rows="3" placeholder="Provide extra details about copyright status, strikes, or monthly earnings..." class="w-full bg-slate-900 border border-white/10 rounded-xl p-3 text-xs text-white resize-none focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t border-white/10">
+                    <button type="button" onclick="closeSellModal()" class="px-4 py-2.5 bg-gray-800 text-gray-300 text-xs font-semibold rounded-xl">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs shadow-lg flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Submit & Send Direct to Owner WhatsApp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="assets/js/data.js"></script>
     <script src="assets/js/app.js"></script>
