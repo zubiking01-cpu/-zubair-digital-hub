@@ -1053,18 +1053,16 @@ function createAccountCardHTML(item) {
 
     const hasScreenshots = item.screenshots && item.screenshots.length > 0;
     const coverImageSrc = hasScreenshots ? item.screenshots[0] : null;
+    const isSold = item.isSold || item.status === 'sold';
 
     return `
-        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group relative border border-white/10 hover:border-indigo-500/40 transition-all duration-300 shadow-xl">
+        <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group relative border ${isSold ? 'border-red-500/40 opacity-90' : 'border-white/10 hover:border-indigo-500/40'} transition-all duration-300 shadow-xl">
             <div>
                 <!-- Top Cover Image / Proof Preview Banner (Clickable to open full details modal) -->
                 <div onclick="openListingModal('${item.id}')" class="relative w-full aspect-[16/9] overflow-hidden bg-slate-950 cursor-pointer group/cover border-b border-white/10">
                     ${coverImageSrc ? `
-                        <img src="${coverImageSrc}" alt="${item.title}" class="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-500">
+                        <img src="${coverImageSrc}" alt="${item.title}" class="w-full h-full object-cover group-hover/cover:scale-105 transition-transform duration-500 ${isSold ? 'grayscale-[50%]' : ''}">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
-                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/cover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-xs">
-                            <i class="fa-solid fa-magnifying-glass-plus text-amber-400 text-lg"></i> Click to View Screenshots & Details
-                        </div>
                     ` : `
                         <div class="w-full h-full bg-gradient-to-br ${gradientClass} flex flex-col items-center justify-center p-4 relative overflow-hidden">
                             <i class="fa-brands ${iconClass} text-6xl opacity-20 absolute -bottom-2 -right-2"></i>
@@ -1074,8 +1072,19 @@ function createAccountCardHTML(item) {
                             <span class="text-xs font-bold text-white uppercase tracking-wider text-center line-clamp-1">${item.title}</span>
                             <span class="text-[10px] text-gray-300 font-mono mt-0.5">${item.handle}</span>
                         </div>
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/cover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-xs">
-                            <i class="fa-solid fa-eye text-indigo-400 text-lg"></i> View Listing Details
+                    `}
+
+                    <!-- SOLD OUT WATERMARK OVERLAY -->
+                    ${isSold ? `
+                        <div class="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px] flex flex-col items-center justify-center gap-1 z-20">
+                            <span class="px-4 py-1.5 bg-red-600 text-white font-black rounded-full text-xs shadow-2xl tracking-widest uppercase border border-white/20 animate-pulse">
+                                🔴 SOLD OUT
+                            </span>
+                            <span class="text-[10px] text-gray-300 font-mono font-semibold">Transferred via Escrow</span>
+                        </div>
+                    ` : `
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover/cover:opacity-100 transition-opacity flex items-center justify-center gap-2 text-white font-bold text-xs">
+                            <i class="fa-solid fa-magnifying-glass-plus text-amber-400 text-lg"></i> Click to View Screenshots & Details
                         </div>
                     `}
 
@@ -1087,7 +1096,11 @@ function createAccountCardHTML(item) {
                     </div>
 
                     <div class="absolute top-3 right-3 z-10">
-                        ${item.monetized ? `
+                        ${isSold ? `
+                            <span class="px-2.5 py-1 text-[10px] font-bold text-red-300 bg-red-950/90 border border-red-500/40 rounded-full shadow-md">
+                                🔴 SOLD
+                            </span>
+                        ` : item.monetized ? `
                             <span class="px-2.5 py-1 text-[10px] font-bold text-emerald-400 bg-emerald-950/90 border border-emerald-500/40 rounded-full flex items-center gap-1 shadow-md">
                                 <i class="fa-solid fa-circle-check text-[10px]"></i> Monetized
                             </span>
@@ -1151,15 +1164,21 @@ function createAccountCardHTML(item) {
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5">
-                    <button onclick="openDirectDMModal('${item.id}')" title="Direct DM / Contact Owner" class="px-2.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition flex items-center gap-1">
-                        <i class="fa-brands fa-whatsapp"></i> DM
-                    </button>
                     <button onclick="openListingModal('${item.id}')" class="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-semibold text-white transition">
                         Details
                     </button>
-                    <button onclick="buyViaEscrow('${item.id}')" class="px-3 py-1.5 btn-brand rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-md">
-                        <i class="fa-solid fa-shield-halved"></i> Buy
-                    </button>
+                    ${isSold ? `
+                        <button disabled class="px-3 py-1.5 bg-red-950/80 border border-red-500/40 text-red-400 font-black rounded-xl text-xs cursor-not-allowed shadow">
+                            🔴 SOLD OUT
+                        </button>
+                    ` : `
+                        <button onclick="openDirectDMModal('${item.id}')" title="Direct DM / Contact Owner" class="px-2.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition flex items-center gap-1">
+                            <i class="fa-brands fa-whatsapp"></i> DM
+                        </button>
+                        <button onclick="buyViaEscrow('${item.id}')" class="px-3 py-1.5 btn-brand rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-md">
+                            <i class="fa-solid fa-shield-halved"></i> Buy
+                        </button>
+                    `}
                 </div>
             </div>
         </div>
@@ -1383,6 +1402,7 @@ function openListingModal(listingId) {
     const modalContent = document.getElementById('modal-content-area');
     if (!modal || !modalContent) return;
 
+    const isSold = item.isSold || item.status === 'sold';
     const featuresList = (item.features || []).map(f => `<li class="flex items-center gap-2 text-sm text-gray-300"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> ${f}</li>`).join('');
 
     modalContent.innerHTML = `
@@ -1399,6 +1419,19 @@ function openListingModal(listingId) {
             </button>
         </div>
 
+        ${isSold ? `
+            <div class="p-3.5 bg-red-950/80 border border-red-500/50 rounded-2xl mb-5 text-xs text-red-300 font-bold flex items-center justify-between shadow-xl">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-circle-xmark text-red-400 text-lg"></i>
+                    <div>
+                        <strong class="text-white block">🔴 ACCOUNT SOLD & TRANSFERRED</strong>
+                        <span>This account has been successfully sold to a buyer via Escrow. Out of stock.</span>
+                    </div>
+                </div>
+                <span class="px-3 py-1 bg-red-600 text-white rounded-lg text-[10px] uppercase font-black tracking-wider">SOLD OUT</span>
+            </div>
+        ` : ''}
+
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 my-6">
             <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/10">
                 <span class="text-xs text-gray-400">Subscribers / Audience</span>
@@ -1413,8 +1446,10 @@ function openListingModal(listingId) {
                 <p class="text-sm font-bold text-cyan-400 mt-1">${item.monthlyRevenue}</p>
             </div>
             <div class="bg-gray-900/80 p-3.5 rounded-xl border border-white/10">
-                <span class="text-xs text-gray-400">Verified Seller</span>
-                <p class="text-sm font-bold text-emerald-400 mt-1"><i class="fa-solid fa-shield-check"></i> Escrow Protected</p>
+                <span class="text-xs text-gray-400">Listing Status</span>
+                <p class="text-sm font-bold ${isSold ? 'text-red-400' : 'text-emerald-400'} mt-1">
+                    <i class="fa-solid ${isSold ? 'fa-lock' : 'fa-shield-check'}"></i> ${isSold ? '🔴 SOLD OUT' : '🟢 Available'}
+                </p>
             </div>
         </div>
 
@@ -1458,13 +1493,19 @@ function openListingModal(listingId) {
                 </div>
             </div>
             <div class="flex gap-2">
-                <button onclick="openDirectDMModal('${item.id}')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
-                    <i class="fa-brands fa-whatsapp text-sm"></i> Direct DM Owner
-                </button>
-                <button onclick="closeListingModal()" class="px-3.5 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-xs font-semibold text-gray-300">Close</button>
-                <button onclick="buyViaEscrow('${item.id}')" class="px-5 py-2.5 btn-brand rounded-xl text-xs font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved"></i> Deal via Escrow
-                </button>
+                <button onclick="closeListingModal()" class="px-4 py-2.5 bg-gray-800 hover:bg-gray-700 rounded-xl text-xs font-semibold text-gray-300">Close</button>
+                ${isSold ? `
+                    <button disabled class="px-6 py-2.5 bg-red-950/80 border border-red-500/40 text-red-400 font-black rounded-xl text-xs cursor-not-allowed shadow">
+                        🔴 SOLD OUT
+                    </button>
+                ` : `
+                    <button onclick="openDirectDMModal('${item.id}')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
+                        <i class="fa-brands fa-whatsapp text-sm"></i> Direct DM Owner
+                    </button>
+                    <button onclick="buyViaEscrow('${item.id}')" class="px-5 py-2.5 btn-brand rounded-xl text-xs font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved"></i> Deal via Escrow
+                    </button>
+                `}
             </div>
         </div>
     `;

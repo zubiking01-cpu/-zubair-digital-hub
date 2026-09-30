@@ -530,15 +530,68 @@
 
                 <!-- SECTION 3: LISTINGS TAB -->
                 <div id="sec-listings" class="space-y-6" style="display: none;">
+                    
+                    <!-- Quick Inventory Summary Bar -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="bg-[#101622] p-4 rounded-2xl border border-white/10 flex items-center justify-between">
+                            <div>
+                                <span class="text-[11px] font-bold text-gray-400 uppercase tracking-wider block">Total Published Listings</span>
+                                <span id="inventory-stat-total" class="text-2xl font-black text-white block mt-1">0</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 border border-purple-500/30 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#101622] p-4 rounded-2xl border border-emerald-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">🟢 Active & Available</span>
+                                <span id="inventory-stat-available" class="text-2xl font-black text-emerald-400 block mt-1">0</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-circle-check"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-[#101622] p-4 rounded-2xl border border-red-500/30 flex items-center justify-between">
+                            <div>
+                                <span class="text-[11px] font-bold text-red-400 uppercase tracking-wider block">🔴 Sold Out</span>
+                                <span id="inventory-stat-sold" class="text-2xl font-black text-red-400 block mt-1">0</span>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="bg-[#101622] p-6 rounded-3xl border border-white/10 shadow-2xl">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                                <i class="fa-solid fa-list-check text-purple-400"></i> Manage Listings Inventory
-                            </h3>
-                            <button onclick="openCreateListingModal()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-black transition shadow flex items-center gap-2">
-                                <i class="fa-solid fa-plus-circle"></i> + Add New Listing
+                            <div>
+                                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-purple-400"></i> Manage Active & Sold Listings Inventory
+                                </h3>
+                                <p class="text-xs text-gray-400 mt-0.5">Toggle listing sale status between Available & Sold Out or add new listings live.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="openCreateListingModal()" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-black transition shadow flex items-center gap-2">
+                                    <i class="fa-solid fa-plus-circle"></i> + Add New Listing
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Status Filter Buttons -->
+                        <div class="flex items-center gap-2 mb-4 pt-2 border-t border-white/5">
+                            <button onclick="renderListingsTable('all')" class="px-3 py-1.5 rounded-xl bg-white/10 text-white font-bold text-xs hover:bg-white/20 transition">
+                                All Inventory
+                            </button>
+                            <button onclick="renderListingsTable('available')" class="px-3 py-1.5 rounded-xl bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 font-bold text-xs hover:bg-emerald-950 transition">
+                                🟢 Available Only
+                            </button>
+                            <button onclick="renderListingsTable('sold')" class="px-3 py-1.5 rounded-xl bg-red-950/60 text-red-400 border border-red-500/30 font-bold text-xs hover:bg-red-950 transition">
+                                🔴 Sold Out Only
                             </button>
                         </div>
+
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead>
@@ -547,7 +600,8 @@
                                         <th class="pb-3 px-3">Platform</th>
                                         <th class="pb-3 px-3">Followers</th>
                                         <th class="pb-3 px-3">Price</th>
-                                        <th class="pb-3 px-3 text-right">Action</th>
+                                        <th class="pb-3 px-3">Sale Status</th>
+                                        <th class="pb-3 px-3 text-right">Actions (Mark Sold / Delete)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="unified-listings-table">
@@ -1751,30 +1805,87 @@
             }
         }
 
-        function renderListingsTable() {
+        function renderListingsTable(filter = 'all') {
             const tbody1 = document.getElementById('unified-listings-table');
             const tbody2 = document.getElementById('overview-listings-table');
-            let listings = window.allListings || [];
+            let listings = window.allListings || JSON.parse(localStorage.getItem('zdh_listings') || '[]');
 
-            const contentHTML = listings.length === 0 ? 
-                `<tr><td colspan="5" class="text-center py-6 text-xs text-gray-500 font-mono">No listings available.</td></tr>` :
-                listings.map(item => `
-                    <tr class="border-b border-white/5 text-xs text-gray-300 hover:bg-white/5 transition">
-                        <td class="py-3 px-3">
-                            <strong class="text-white block font-bold text-sm">${item.title}</strong>
-                            <span class="text-[11px] text-gray-400 font-mono">${item.handle} • ${item.niche}</span>
-                        </td>
-                        <td class="py-3 px-3 uppercase font-semibold text-indigo-400">${item.platform}</td>
-                        <td class="py-3 px-3 font-semibold text-gray-200">${item.followers}</td>
-                        <td class="py-3 px-3 font-bold text-white">PKR ${item.price.toLocaleString()}</td>
-                        <td class="py-3 px-3 text-right">
-                            <button onclick="deleteListing('${item.id}')" class="px-2.5 py-1 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg font-bold hover:bg-red-600/30 transition">Delete</button>
-                        </td>
-                    </tr>
-                `).join('');
+            const totalCount = listings.length;
+            const availableCount = listings.filter(l => !l.isSold && l.status !== 'sold').length;
+            const soldCount = listings.filter(l => l.isSold || l.status === 'sold').length;
+
+            if (document.getElementById('inventory-stat-total')) document.getElementById('inventory-stat-total').innerText = totalCount;
+            if (document.getElementById('inventory-stat-available')) document.getElementById('inventory-stat-available').innerText = availableCount;
+            if (document.getElementById('inventory-stat-sold')) document.getElementById('inventory-stat-sold').innerText = soldCount;
+
+            let displayListings = listings;
+            if (filter === 'available') {
+                displayListings = listings.filter(l => !l.isSold && l.status !== 'sold');
+            } else if (filter === 'sold') {
+                displayListings = listings.filter(l => l.isSold || l.status === 'sold');
+            }
+
+            const contentHTML = displayListings.length === 0 ? 
+                `<tr><td colspan="6" class="text-center py-6 text-xs text-gray-500 font-mono">No listings match this view filter.</td></tr>` :
+                displayListings.map(item => {
+                    const isSold = item.isSold || item.status === 'sold';
+                    const rate = 280;
+                    const usdtVal = Math.round(item.price / rate);
+
+                    return `
+                        <tr class="border-b border-white/5 text-xs text-gray-300 hover:bg-white/5 transition">
+                            <td class="py-3 px-3">
+                                <strong class="text-white block font-bold text-sm">${item.title}</strong>
+                                <span class="text-[11px] text-gray-400 font-mono">${item.handle} • ${item.niche}</span>
+                            </td>
+                            <td class="py-3 px-3 uppercase font-semibold text-indigo-400">${item.platform}</td>
+                            <td class="py-3 px-3 font-semibold text-gray-200">${item.followers}</td>
+                            <td class="py-3 px-3">
+                                <strong class="text-white block font-bold">PKR ${item.price.toLocaleString()}</strong>
+                                <span class="text-[11px] text-emerald-400 font-mono">$ ${usdtVal} USDT</span>
+                            </td>
+                            <td class="py-3 px-3">
+                                ${isSold ? `
+                                    <span class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-red-950/80 text-red-400 border border-red-500/40 inline-flex items-center gap-1 shadow">
+                                        🔴 SOLD OUT
+                                    </span>
+                                ` : `
+                                    <span class="px-2.5 py-1 text-[10px] font-bold rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 inline-flex items-center gap-1 shadow">
+                                        🟢 Available
+                                    </span>
+                                `}
+                            </td>
+                            <td class="py-3 px-3 text-right">
+                                <div class="flex items-center justify-end gap-1.5">
+                                    <button onclick="toggleListingSaleStatus('${item.id}')" class="px-2.5 py-1 ${isSold ? 'bg-emerald-600/20 text-emerald-400 border-emerald-500/30 hover:bg-emerald-600/40' : 'bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/40'} border rounded-lg text-xs font-bold transition">
+                                        ${isSold ? '🟢 Mark as Available' : '🔴 Mark as Sold'}
+                                    </button>
+                                    <button onclick="deleteListing('${item.id}')" class="px-2.5 py-1 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold hover:bg-red-600/30 transition">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
 
             if (tbody1) tbody1.innerHTML = contentHTML;
             if (tbody2) tbody2.innerHTML = contentHTML;
+        }
+
+        function toggleListingSaleStatus(id) {
+            let listings = window.allListings || JSON.parse(localStorage.getItem('zdh_listings') || '[]');
+            const item = listings.find(l => l.id === id);
+            if (!item) return;
+
+            item.isSold = !item.isSold;
+            item.status = item.isSold ? 'sold' : 'available';
+
+            window.allListings = listings;
+            localStorage.setItem('zdh_listings', JSON.stringify(listings));
+            window.dispatchEvent(new Event('storage'));
+
+            const statusText = item.isSold ? '🔴 SOLD OUT' : '🟢 AVAILABLE';
+            alert(`Status Updated!\n\nListing: "${item.title}" is now marked as ${statusText}. Website updated instantly.`);
+            renderListingsTable();
         }
 
         function renderReviewsTable() {
