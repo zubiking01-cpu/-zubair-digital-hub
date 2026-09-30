@@ -1787,7 +1787,8 @@ function orderService(serviceName, price) {
         `📦 *Service:* ${serviceName}\n` +
         `💵 *Price:* ${price}\n\n` +
         `Please guide me on how to proceed.`;
-    window.open(`https://wa.me/${(supportConfig.supportWhatsapp || '').replace(/[^0-9]/g, '') || '18005550199'}?text=${encodeURIComponent(msg)}`, '_blank');
+    const cleanWa = (supportConfig.supportWhatsapp || '923023632638').replace(/[^0-9]/g, '') || '923023632638';
+    window.open(`https://wa.me/${cleanWa}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 
 // Handle "List Account for Sale" Form Submission
@@ -1802,12 +1803,15 @@ function handleSellFormSubmit(e) {
     const price = parseFloat(document.getElementById('sell-price')?.value || 0);
     const monetized = document.getElementById('sell-monetized')?.value === 'true';
     const description = document.getElementById('sell-desc')?.value;
-    const contact = document.getElementById('sell-contact')?.value;
+    const contact = document.getElementById('sell-contact')?.value || 'WhatsApp User';
 
-    if (!title || !platform || !handle || !price || !contact) {
+    if (!title || !platform || !handle || !price) {
         alert('Please fill out all required fields.');
         return;
     }
+
+    const rate = parseFloat(paymentMethods.exchangeRate || 280);
+    const usdtPrice = Math.round(price / rate);
 
     const pendingListing = {
         id: `pending-${Date.now()}`,
@@ -1855,11 +1859,27 @@ function handleSellFormSubmit(e) {
 
     window.dispatchEvent(new Event('storage'));
 
+    // Construct WhatsApp message pre-filled with complete seller channel details
+    const waMsg = `Hello Zubair Digital Hub Master Owner! 🚀\n\n` +
+        `I want to SELL my social media account on your portal:\n\n` +
+        `📺 *Title:* ${title}\n` +
+        `🌐 *Platform:* ${platform.toUpperCase()}\n` +
+        `🔗 *Handle/Link:* ${handle}\n` +
+        `👥 *Followers/Subs:* ${followers || 'N/A'}\n` +
+        `🏷️ *Niche:* ${niche || 'General'}\n` +
+        `💵 *Asking Price:* PKR ${price.toLocaleString()} (~ $${usdtPrice} USDT)\n` +
+        `✅ *Monetized:* ${monetized ? 'Yes (Monetized)' : 'No (Non-Monetized)'}\n` +
+        `📝 *Channel Details:* ${description || 'N/A'}\n\n` +
+        `Please review and publish my listing on Zubair Digital Hub!`;
+
+    const cleanWa = (supportConfig.supportWhatsapp || '923023632638').replace(/[^0-9]/g, '') || '923023632638';
+    window.open(`https://wa.me/${cleanWa}?text=${encodeURIComponent(waMsg)}`, '_blank');
+
     closeSellModal();
     const sellForm = document.getElementById('sell-account-form');
     if (sellForm) sellForm.reset();
 
-    alert(`⏳ LISTING SUBMITTED FOR MASTER ADMIN APPROVAL!\n\nTitle: ${title}\nPlatform: ${platform.toUpperCase()}\nPrice: PKR ${price.toLocaleString()}\n\nThank you! Your channel listing has been sent to Master Owner Zubair. It will be reviewed in the Admin Panel and published live on the website once approved.`);
+    alert(`🚀 SELLER SUBMISSION SENT TO MASTER OWNER ZUBAIR!\n\nYour listing details have been sent directly to Master Owner Zubair's WhatsApp (+92 302 3632638) and queued in the Admin Panel for review.`);
 }
 
 function openSellModal() {
