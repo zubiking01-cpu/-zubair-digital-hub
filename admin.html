@@ -167,6 +167,12 @@
                         <button onclick="switchTab('listings')" id="tab-listings" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
                             <i class="fa-solid fa-list-check text-sm text-purple-400"></i> Listings Inventory
                         </button>
+                        <button onclick="switchTab('pending')" id="tab-pending" class="w-full text-left flex items-center justify-between px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
+                            <span class="flex items-center gap-3">
+                                <i class="fa-solid fa-clock-rotate-left text-sm text-amber-400"></i> Pending User Listings
+                            </span>
+                            <span id="pending-count-badge" class="px-2 py-0.5 text-[10px] font-black rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">0</span>
+                        </button>
                         <button onclick="switchTab('services')" id="tab-services" class="w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition">
                             <i class="fa-solid fa-rocket text-sm text-purple-400"></i> Growth Services & Rates
                         </button>
@@ -648,6 +654,45 @@
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+
+                <!-- SECTION: PENDING USER LISTINGS APPROVAL TAB -->
+                <div id="sec-pending" class="space-y-6" style="display: none;">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-black text-white flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Pending User Channel Listings
+                            </h1>
+                            <p class="text-xs text-gray-400 mt-1">Review seller submissions, verify details, and approve or reject before publishing live to the website.</p>
+                        </div>
+                    </div>
+
+                    <!-- Pending Listings Table Box -->
+                    <div class="bg-[#101622] p-6 rounded-3xl border border-amber-500/30 shadow-2xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-user-check text-amber-400"></i> Seller Submissions Awaiting Approval
+                            </h3>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-white/10 text-[11px] font-bold text-gray-400 uppercase">
+                                        <th class="py-3 px-3">Title / Handle</th>
+                                        <th class="py-3 px-3">Platform</th>
+                                        <th class="py-3 px-3">Followers / Type</th>
+                                        <th class="py-3 px-3">Asking Price</th>
+                                        <th class="py-3 px-3">Seller Contact</th>
+                                        <th class="py-3 px-3 text-right">Approval Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pending-listings-table" class="divide-y divide-white/5 text-xs text-gray-300">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -1443,10 +1488,11 @@
             renderDealsTable();
             renderInquiriesTable();
             renderServicesAdminTable();
+            renderPendingListingsTable();
         }
 
         function switchTab(tabName) {
-            const tabs = ['overview', 'deals', 'inquiries', 'withdrawals', 'listings', 'services', 'support', 'reviews', 'security'];
+            const tabs = ['overview', 'deals', 'inquiries', 'withdrawals', 'listings', 'pending', 'services', 'support', 'reviews', 'security'];
             tabs.forEach(t => {
                 const sec = document.getElementById(`sec-${t}`);
                 const btn = document.getElementById(`tab-${t}`);
@@ -1462,6 +1508,90 @@
             if (activeBtn) {
                 activeBtn.className = "w-full text-left flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/10 text-white font-bold transition";
             }
+
+            if (tabName === 'pending') renderPendingListingsTable();
+        }
+
+        function renderPendingListingsTable() {
+            const tbody = document.getElementById('pending-listings-table');
+            const badge = document.getElementById('pending-count-badge');
+            let pendingListings = JSON.parse(localStorage.getItem('zdh_pending_listings') || '[]');
+
+            if (badge) badge.innerText = pendingListings.length;
+
+            if (!tbody) return;
+
+            if (pendingListings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-xs text-gray-500 font-mono">No pending user channel listing submissions. All caught up!</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = pendingListings.map(item => `
+                <tr class="border-b border-white/5 text-xs text-gray-300 hover:bg-white/5 transition">
+                    <td class="py-3.5 px-3">
+                        <strong class="text-white block font-bold text-xs">${item.title}</strong>
+                        <span class="text-[10px] text-gray-400 font-mono">${item.handle}</span>
+                    </td>
+                    <td class="py-3.5 px-3 uppercase text-purple-400 font-bold">${item.platform}</td>
+                    <td class="py-3.5 px-3">
+                        <span class="text-white font-bold block">${item.followers}</span>
+                        <span class="text-[10px] text-emerald-400">${item.monetized ? 'Monetized' : 'Organic'}</span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                        <strong class="text-white block font-bold">PKR ${item.price.toLocaleString()}</strong>
+                        <span class="text-[11px] text-emerald-400 font-mono">$ ${Math.round(item.price / 280)} USDT</span>
+                    </td>
+                    <td class="py-3.5 px-3">
+                        <a href="https://wa.me/${(item.sellerContact || '').replace(/[^0-9]/g, '')}" target="_blank" class="text-emerald-400 font-bold font-mono hover:underline block">
+                            <i class="fa-brands fa-whatsapp"></i> ${item.sellerContact}
+                        </a>
+                        <span class="text-[10px] text-gray-500 block">${item.submittedAt || 'Just now'}</span>
+                    </td>
+                    <td class="py-3.5 px-3 text-right">
+                        <div class="flex items-center justify-end gap-1.5">
+                            <button onclick="approvePendingListing('${item.id}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1">
+                                ✓ Approve & Publish Live
+                            </button>
+                            <button onclick="rejectPendingListing('${item.id}')" class="px-2.5 py-1 bg-red-600/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold hover:bg-red-600/40">
+                                Reject
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function approvePendingListing(id) {
+            let pendingListings = JSON.parse(localStorage.getItem('zdh_pending_listings') || '[]');
+            const target = pendingListings.find(l => l.id === id);
+            if (!target) return;
+
+            // Remove from pending
+            pendingListings = pendingListings.filter(l => l.id !== id);
+            localStorage.setItem('zdh_pending_listings', JSON.stringify(pendingListings));
+
+            // Prepare published listing
+            target.status = 'Approved & Live';
+            target.verified = true;
+
+            // Add to allListings & update localStorage
+            let listings = window.allListings || JSON.parse(localStorage.getItem('zdh_listings') || '[]');
+            listings.unshift(target);
+            window.allListings = listings;
+            localStorage.setItem('zdh_listings', JSON.stringify(listings));
+            window.dispatchEvent(new Event('storage'));
+
+            alert(`🎉 LISTING APPROVED & PUBLISHED LIVE!\n\nTitle: ${target.title}\nPlatform: ${target.platform.toUpperCase()}\nPrice: PKR ${target.price.toLocaleString()}\n\nThis listing is now active live on the marketplace website.`);
+            showMasterDashboard();
+        }
+
+        function rejectPendingListing(id) {
+            if (!confirm('Are you sure you want to reject and delete this seller submission?')) return;
+            let pendingListings = JSON.parse(localStorage.getItem('zdh_pending_listings') || '[]');
+            pendingListings = pendingListings.filter(l => l.id !== id);
+            localStorage.setItem('zdh_pending_listings', JSON.stringify(pendingListings));
+
+            showMasterDashboard();
         }
 
         function renderDealsTable() {
