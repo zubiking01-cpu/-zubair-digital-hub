@@ -1143,8 +1143,12 @@ function createAccountCardHTML(item) {
             <!-- Footer Action Bar -->
             <div class="p-4 border-t border-white/5 bg-slate-950/60 flex items-center justify-between">
                 <div>
-                    <span class="text-[9px] text-gray-400 uppercase tracking-wider block font-semibold">Price (${currentCurrency})</span>
-                    <span class="text-base font-black ${currentCurrency === 'USDT' ? 'text-emerald-400' : 'text-white'}">${formatPrice(item.price)}</span>
+                    <span class="text-[9px] text-gray-400 uppercase tracking-wider block font-semibold">Listing Price (PKR / USD)</span>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-xs font-black ${currentCurrency === 'PKR' ? 'text-white underline decoration-indigo-500' : 'text-gray-300'}">PKR ${item.price.toLocaleString()}</span>
+                        <span class="text-[10px] text-gray-500 font-bold">•</span>
+                        <span class="text-xs font-black font-mono ${currentCurrency === 'USDT' ? 'text-emerald-400 underline decoration-emerald-500' : 'text-emerald-400/90'}">$ ${Math.round(item.price / (parseFloat(paymentMethods.exchangeRate) || 280)).toLocaleString()} USDT</span>
+                    </div>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <button onclick="openDirectDMModal('${item.id}')" title="Direct DM / Contact Owner" class="px-2.5 py-1.5 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs font-bold transition flex items-center gap-1">
@@ -1444,10 +1448,14 @@ function openListingModal(listingId) {
             </ul>
         </div>
 
-        <div class="flex items-center justify-between border-t border-white/10 pt-5 mt-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-t border-white/10 pt-5 mt-6 gap-3">
             <div>
-                <span class="text-xs text-gray-400 block">Total Escrow Price (${currentCurrency})</span>
-                <span class="text-2xl font-extrabold text-white">${formatPrice(item.price)}</span>
+                <span class="text-xs text-gray-400 block font-semibold uppercase tracking-wider">Total Escrow Price (PKR / USD)</span>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="text-2xl font-extrabold text-white">PKR ${item.price.toLocaleString()}</span>
+                    <span class="text-gray-500 text-lg">•</span>
+                    <span class="text-xl font-black font-mono text-emerald-400">$ ${Math.round(item.price / (parseFloat(paymentMethods.exchangeRate) || 280)).toLocaleString()} USDT</span>
+                </div>
             </div>
             <div class="flex gap-2">
                 <button onclick="openDirectDMModal('${item.id}')" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow">
@@ -1801,13 +1809,13 @@ function handleSellFormSubmit(e) {
         return;
     }
 
-    const newListing = {
-        id: `custom-${Date.now()}`,
+    const pendingListing = {
+        id: `pending-${Date.now()}`,
         title,
         platform,
         handle,
         followers: followers || 'N/A',
-        followersCount: parseInt(followers.replace(/,/g, '')) || 0,
+        followersCount: parseInt((followers || '').replace(/[^0-9]/g, '')) || 0,
         monetized,
         niche: niche || 'General',
         monthlyRevenue: 'Contact Seller',
@@ -1817,23 +1825,27 @@ function handleSellFormSubmit(e) {
         verified: false,
         description: description || 'No extra description provided.',
         features: ['Escrow Protection Guaranteed', 'Direct Seller Handover'],
-        sellerContact: contact
+        sellerContact: contact,
+        submittedAt: new Date().toLocaleString(),
+        status: 'Pending Admin Approval'
     };
 
-    allListings.unshift(newListing);
-    localStorage.setItem('zdh_listings', JSON.stringify(allListings));
+    // Store in pending listings queue
+    const pendingQueue = JSON.parse(localStorage.getItem('zdh_pending_listings') || '[]');
+    pendingQueue.unshift(pendingListing);
+    localStorage.setItem('zdh_pending_listings', JSON.stringify(pendingQueue));
 
-    // Also push seller submission to inquiries log for Admin Panel alerts
+    // Also push seller submission to inquiries log for Admin Panel notification alert
     const newInquiry = {
         id: `SEL-${Math.floor(100 + Math.random() * 900)}`,
-        clientName: `Seller (${contact})`,
+        clientName: `Seller Submission (${contact})`,
         phoneWhatsapp: contact,
         email: `seller@zubairdigitalhub.com`,
-        accountInterested: `Seller Proposal: ${title} (${handle})`,
+        accountInterested: `Pending Submission: ${title} (${handle})`,
         offeredAmount: formatPrice(price),
-        messageText: description || `Platform: ${platform.toUpperCase()} | Subs/Followers: ${followers || 'N/A'}`,
+        messageText: `Seller requested listing approval for: ${title} (${handle})\nPlatform: ${platform.toUpperCase()} | Followers: ${followers || 'N/A'}\nDescription: ${description || 'N/A'}`,
         date: 'Just now',
-        status: 'Unread Seller Submission'
+        status: 'Pending Approval Request'
     };
 
     const inquiries = JSON.parse(localStorage.getItem('zdh_inquiries') || '[]');
@@ -1841,10 +1853,13 @@ function handleSellFormSubmit(e) {
     localStorage.setItem('zdh_inquiries', JSON.stringify(inquiries));
     if (window.allInquiries) window.allInquiries = inquiries;
 
-    closeSellModal();
-    renderMarketplace();
+    window.dispatchEvent(new Event('storage'));
 
-    alert(`🚀 LISTING PROPOSAL DELIVERED DIRECTLY TO MASTER ADMIN PANEL INBOX!\n\nTitle: ${title}\nPlatform: ${platform.toUpperCase()}\nPrice: PKR ${price.toLocaleString()}\n\nMaster Owner Zubair has received your submission in his Admin Panel Inbox.`);
+    closeSellModal();
+    const sellForm = document.getElementById('sell-account-form');
+    if (sellForm) sellForm.reset();
+
+    alert(`⏳ LISTING SUBMITTED FOR MASTER ADMIN APPROVAL!\n\nTitle: ${title}\nPlatform: ${platform.toUpperCase()}\nPrice: PKR ${price.toLocaleString()}\n\nThank you! Your channel listing has been sent to Master Owner Zubair. It will be reviewed in the Admin Panel and published live on the website once approved.`);
 }
 
 function openSellModal() {
